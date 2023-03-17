@@ -10,6 +10,7 @@ Created on Fri Mar 17 03:17:24 2023
 
 ### TODO
 ### file and project's struct should be organized!
+### write news class for generic usage
 ### TODO END
 
 
@@ -18,8 +19,13 @@ Created on Fri Mar 17 03:17:24 2023
 from GoogleNews import GoogleNews
 import pandas as pd
 
+class News:
 
-googlenews = GoogleNews(lang='en', period='6m')
+    def __init__(self,keyword):
+        self.keyword = keyword
+
+
+googlenews = GoogleNews(lang='tr', period='6m')
 googlenews.search('AAPL')
 result = googlenews.result()
 
