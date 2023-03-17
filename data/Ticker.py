@@ -8,16 +8,15 @@ import yfinance as yf
 import pandas as pd
 import os
 
+def check_folder_status(folder_path):
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
 
 class Ticker:
 
     def __init__(self,symbol,period="6mo"):
         self.symbol = symbol
         self.stock_data = yf.download(self.symbol)
-
-    def check_folder_status(self,folder_path):
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
 
     def create_stock_data(self,period="6mo"):
         try:
@@ -28,7 +27,7 @@ class Ticker:
 
     def to_csv(self,):
         try:
-            self.check_folder_status("one_symbol")
+            check_folder_status("one_symbol")
             print(self.stock_data)
             self.stock_data.to_csv('one_symbol/' + self.symbol + '_' + self.period + '_data.csv')
         except:
@@ -38,9 +37,8 @@ class Ticker:
         data = self.stock_data.copy()
         data['ticker'] = self.symbol
         return data
-        
-        
-    
+
+
 tickers = ['AAPL', 'GOOG', 'MSFT']
 
 
