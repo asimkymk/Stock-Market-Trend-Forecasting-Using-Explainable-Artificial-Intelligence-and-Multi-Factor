@@ -1,19 +1,15 @@
-from newsapi import NewsApiClient
+import requests
 
-# Init
-newsapi = NewsApiClient(api_key='dda2e1dd09a04623a9e74e42a98d2d58')
+symbol = "AAPL"  # hisse senedi sembolü
 
-# /v2/top-headlines
+api_key = "dda2e1dd09a04623a9e74e42a98d2d58"  # Alpha Vantage API anahtarı
+from_date = "2022-01-01"  # başlangıç tarihi
+to_date = "2022-03-31"  # bitiş tarihi
 
-# /v2/everything
-all_articles = newsapi.get_everything(q='bitcoin',
-                                      sources='bbc-news,the-verge',
-                                      domains='bbc.co.uk,techcrunch.com',
-                                      from_param='2017-12-01',
-                                      to='2017-12-12',
-                                      language='en',
-                                      sort_by='relevancy',
-                                      page=2)
+url = f"https://newsapi.org/v2/everything?q={symbol}&from={from_date}&to={to_date}&apiKey={api_key}"
 
-# /v2/top-headlines/sources
-sources = newsapi.get_sources()
+response = requests.get(url)
+
+news = response.json()
+
+print(news)
