@@ -73,13 +73,16 @@ class Ticker:
     def create_news_data(self,):
         news_scorer = NewsScorer()
         dates = self.__stock_data['Date'].astype(str)
+        scores = []
         for date in dates:
+            print("**********************************")
             date_obj = datetime.strptime(date, '%Y-%m-%d')
             formatted_date_str = date_obj.strftime('%m-%d-%Y')
             try:
-
+                print(self.__symbol + ' - ' + formatted_date_str)
                 googlenews = GoogleNews(start=formatted_date_str,end=formatted_date_str)
                 googlenews.search(self.__symbol)
+                
                 result = googlenews.result()
                 news = []
                 for item in result:
@@ -89,10 +92,13 @@ class Ticker:
                 __news_data = pd.DataFrame(news, columns=['title', 'text', "date"])
                 news_scorer.set_news_data(__news_data)
                 news_scorer.create_scored_data()
-                self.__stock_data["date_score"] = news_scorer.get_average_score()[date]
-                time.sleep(0.5)
+                scores.append(news_scorer.get_average_score()[date])
+                time.sleep(1) # avoid 429 too many request
             except:
-                return self.__stock_data
+                break
+
+        self.__stock_data['date_scores'] = pd.Series(scores)
+        return self.__stock_data
 
 tickers = ['AAPL', 'GOOG', 'MSFT']
 
