@@ -1,9 +1,10 @@
 GoogleNews==1.6.6
 newsapi==0.1.1
 newsapi_python==0.2.7
+newspaper==0.1.0.7
+newspaper3k==0.2.8
 nltk==3.8.1
 pandas==1.5.3
 pandas_datareader==0.10.0
-requests==2.26.0
 textblob==0.17.1
 yfinance==0.2.12
