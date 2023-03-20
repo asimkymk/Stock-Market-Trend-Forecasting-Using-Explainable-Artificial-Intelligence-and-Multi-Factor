@@ -21,7 +21,6 @@ class Ticker:
         self.__symbol = symbol
         self.__period = period
         self.__stock_data = ""
-        self.__stock_data = ""
         self.__folder_path = folder_path
         self.__news_data = ""
     
@@ -71,9 +70,8 @@ class Ticker:
         return data
 
     def create_news_data(self,):
-        news_scorer = NewsScorer()
         dates = self.__stock_data['Date'].astype(str)
-        scores = []
+        news = []
         for date in dates:
             print("**********************************")
             date_obj = datetime.strptime(date, '%Y-%m-%d')
@@ -84,21 +82,20 @@ class Ticker:
                 googlenews.search(self.__symbol)
                 
                 result = googlenews.result()
-                news = []
+                
                 for item in result:
                     title = item['title']
                     text = item['desc']
-                    news.append([title, text, date])
-                __news_data = pd.DataFrame(news, columns=['title', 'text', "date"])
-                news_scorer.set_news_data(__news_data)
-                news_scorer.create_scored_data()
-                scores.append(news_scorer.get_average_score()[date])
-                time.sleep(1) # avoid 429 too many request
+                    link = item['link']
+                    news.append([title, text, link,date,self.__symbol])
+                
             except:
+                __news_data = pd.DataFrame(news, columns=['title', 'text', "link",date,"symbol"])
+                return __news_data
                 break
 
-        self.__stock_data['date_scores'] = pd.Series(scores)
-        return self.__stock_data
+        __news_data = pd.DataFrame(news, columns=['title', 'text', "link",date,"symbol"])
+        return __news_data
 
 tickers = ['AAPL', 'GOOG', 'MSFT']
 
@@ -107,9 +104,11 @@ df = pd.DataFrame()
 for symbols in tickers:
     ticker = Ticker(symbol=symbols,)
     ticker.create_stock_data()
-    ticker.create_news_data()
-    df = pd.concat([df, ticker.get_stock_data_with_symbol()])
+    
+    df = pd.concat([df, ticker.create_news_data()])
 print(df)
 print("ok")
 
-df.to_csv("tickers.csv",index=False)
+#df.to_csv("tickers.csv",index=False)
+
+df.to_csv("news_new.csv",index=False)
