@@ -90,11 +90,11 @@ class Ticker:
                     news.append([title, text, link,date,self.__symbol])
                 
             except:
-                __news_data = pd.DataFrame(news, columns=['title', 'text', "link",date,"symbol"])
+                #edited googlenews library to handle 429 too many request error
+                __news_data = pd.DataFrame(news, columns=['title', 'text', "link","date","symbol"])
                 return __news_data
-                break
 
-        __news_data = pd.DataFrame(news, columns=['title', 'text', "link",date,"symbol"])
+        __news_data = pd.DataFrame(news, columns=['title', 'text', "link","date","symbol"])
         return __news_data
 
 tickers = ['AAPL', 'GOOG', 'MSFT']
