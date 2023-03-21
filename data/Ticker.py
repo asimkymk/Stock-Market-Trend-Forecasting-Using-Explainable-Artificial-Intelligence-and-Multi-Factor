@@ -17,10 +17,10 @@ def check_folder_status(folder_path):
 
 class Ticker:
 
-    def __init__(self,symbol="",period="6mo",folder_path="one_symbol"):
+    def __init__(self,symbol="",stock_data = "", period="6mo",folder_path="one_symbol"):
         self.__symbol = symbol
         self.__period = period
-        self.__stock_data = ""
+        self.__stock_data = stock_data
         self.__folder_path = folder_path
         self.__news_data = ""
     
@@ -47,7 +47,7 @@ class Ticker:
 
     def get_folder_path(self,):
         return self.__folder_path
-    
+
     def create_stock_data(self,):
         try:
             self.__stock_data = yf.download(self.__symbol,period=self.__period)
@@ -97,18 +97,3 @@ class Ticker:
         __news_data = pd.DataFrame(news, columns=['title', 'text', "link","date","symbol"])
         return __news_data
 
-tickers = ['AAPL', 'GOOG', 'MSFT']
-
-
-df = pd.DataFrame()
-for symbols in tickers:
-    ticker = Ticker(symbol=symbols,)
-    ticker.create_stock_data()
-    
-    df = pd.concat([df, ticker.create_news_data()])
-print(df)
-print("ok")
-
-#df.to_csv("tickers.csv",index=False)
-
-df.to_csv("news_new.csv",index=False)
