@@ -8,9 +8,7 @@ import yfinance as yf
 import pandas as pd
 import os
 from GoogleNews import GoogleNews
-from news_scorer import NewsScorer
 from datetime import datetime
-import time
 def check_folder_status(folder_path):
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
@@ -52,6 +50,7 @@ class Ticker:
         try:
             self.__stock_data = yf.download(self.__symbol,period=self.__period)
             self.__stock_data = self.__stock_data.reset_index()
+            self.__stock_data['symbol'] = self.__symbol
             return True
         except:
             return False
