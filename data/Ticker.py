@@ -15,11 +15,13 @@ def check_folder_status(folder_path):
 
 class Ticker:
 
-    def __init__(self,symbol="",stock_data = "", period="6mo",folder_path="one_symbol"):
+    def __init__(self,symbol="",stock_data = "", period="6mo",folder_path="one_symbol",start_date="",end_date=''):
         self.__symbol = symbol
         self.__period = period
         self.__stock_data = stock_data
         self.__folder_path = folder_path
+        self.__start_date = start_date
+        self.__end_date = end_date
         self.__news_data = ""
     
     def set_symbol(self,symbol):
@@ -48,10 +50,16 @@ class Ticker:
 
     def create_stock_data(self,):
         try:
-            self.__stock_data = yf.download(self.__symbol,period=self.__period)
-            self.__stock_data = self.__stock_data.reset_index()
-            self.__stock_data['symbol'] = self.__symbol
-            return True
+            if self.__start_date == '' and self.__end_date:
+                self.__stock_data = yf.download(self.__symbol,period=self.__period)
+                self.__stock_data = self.__stock_data.reset_index()
+                self.__stock_data['symbol'] = self.__symbol
+                return True
+            else:
+                self.__stock_data = yf.download(self.__symbol,start=self.__start_date,end=self.__end_date,period="1d")
+                self.__stock_data = self.__stock_data.reset_index()
+                self.__stock_data['symbol'] = self.__symbol
+                return True
         except:
             return False
 

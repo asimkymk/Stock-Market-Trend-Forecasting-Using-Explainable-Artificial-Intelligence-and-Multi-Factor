@@ -17,15 +17,35 @@ def testt():
     print(df)
     print("ok")
 
-    #df.to_csv("tickers.csv",index=False)
+    df.to_csv("tickers.csv",index=False,mode="a")
 
     df.to_csv("news_new.csv",index=False)
+
+
+
+def create_new_tickers_data():
+    tickers = ['AAPL', 'AMC', 'AMD', 'AMZN', 'APE', 'AUY', 'BAC', 'FRC', 'GOLD', 'GOOG', 'GRAB', 'INTC', 'MSFT', 'NIO', 'NVDA', 'PSLV', 'RBLX', 'RIVN', 'ROKU', 'SGFY', 'SJR', 'SNAP', 'TSLA', 'VALE', 'XPEV']
+
+
+
+    df = pd.DataFrame()
+    for symbols in tickers:
+        ticker = Ticker(symbol=symbols,start_date='2022-09-19',end_date='2023-03-17')
+        ticker.create_stock_data()
+        
+        df = pd.concat([df, ticker.get_stock_data()])
+    print(df)
+    print("ok")
+
+    df.to_csv("tickers_new.csv",index=False)
+
+    #df.to_csv("news_new.csv",index=False)
 
 def continue_news():
     news = []
     df = pd.read_csv("tickers.csv")
     df2 = pd.read_csv("news_new.csv")
-    x = (df['Date'], df['ticker'])
+    x = (df['Date'], df['symbol'])
     for i in range(len(x[0])):
 
 
@@ -64,3 +84,4 @@ def continue_news():
 
 
 continue_news()
+#create_new_tickers_data()
