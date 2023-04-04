@@ -34,13 +34,13 @@ def create_new_tickers_data():
     print(df)
     print("ok")
 
-    df.to_csv("tickers_new.csv",index=False)
+    df.to_csv("tickers.csv",index=False)
 
     #df.to_csv("news_new.csv",index=False)
 
 def continue_news():
     news = []
-    df = pd.read_csv("tickers_new.csv")
+    df = pd.read_csv("tickers.csv")
     df2 = pd.read_csv("news_new.csv")
     x = (df['Date'], df['symbol'])
     for i in range(len(x[0])):
@@ -80,5 +80,5 @@ def continue_news():
 
 
 
-#continue_news()
-create_new_tickers_data()
+continue_news()
+#create_new_tickers_data()
