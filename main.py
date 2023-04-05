@@ -1,4 +1,4 @@
-from data.ticker import Ticker
+from data.Ticker import Ticker
 import pandas as pd
 import csv
 import re
