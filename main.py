@@ -69,8 +69,11 @@ def continue_news():
                         text = item['desc']
                         link = item['link']
                         news.append([title, text, link,x[0][i],x[1][i]])
-                except:
+                except TypeError as e_parser:
                     
+                    print('Type Error')
+                    news.append(['NO_TITLE','NO_DESC','NO_LINK',x[0][i],x[1][i]])
+                except:
                     break
             
                 

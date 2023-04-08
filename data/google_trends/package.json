@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "google-trends-api": "^4.9.2",
+    "json2csv": "^6.0.0-alpha.2"
+  }
+}
