@@ -41,44 +41,39 @@ def create_new_tickers_data():
 def continue_news():
     news = []
     df = pd.read_csv("tickers.csv")
-    df2 = pd.read_csv("news_new.csv")
+
+    existing_news = {}
+    with open('news_new.csv', 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            existing_news[(row['date'], row['symbol'])] = True
+
     x = (df['Date'], df['symbol'])
     for i in range(len(x[0])):
+        if (x[0][i], x[1][i]) not in existing_news:
+            try:
+                print(x[0][i] + ' - ' + x[1][i])
+                tarih = x[0][i]
+                date_obj = datetime.strptime(tarih, '%Y-%m-%d')
+                yeni_tarih = date_obj.strftime('%m-%d-%Y')
+                googlenews = GoogleNews(start=yeni_tarih, end=yeni_tarih)
+                googlenews.search('NASDAQ:' + x[1][i])
 
+                result = googlenews.result()
 
-        with open('news_new.csv', 'r',encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            status = True
-            for row in reader:
-                if (re.search(x[0][i], row['date']) and re.search(x[1][i], row['symbol'])):
-                    status = False
-                    break
-            if status:
-                try:
-                    print(x[0][i] + ' - ' + x[1][i])
-                    tarih = x[0][i]
-                    date_obj = datetime.strptime(tarih, '%Y-%m-%d')
-                    yeni_tarih = date_obj.strftime('%m-%d-%Y')
-                    googlenews = GoogleNews(start=yeni_tarih,end=yeni_tarih)
-                    googlenews.search('NASDAQ:' + x[1][i])
-                    
-                    result = googlenews.result()
-                    
-                    for item in result:
-                        title = item['title']
-                        text = item['desc']
-                        link = item['link']
-                        news.append([title, text, link,x[0][i],x[1][i]])
-                except TypeError as e_parser:
-                    
-                    print('Type Error')
-                    news.append(['NO_TITLE','NO_DESC','NO_LINK',x[0][i],x[1][i]])
-                except:
-                    break
-            
-                
-    df3 = pd.DataFrame(news)        
-    df3.to_csv("news_new.csv",mode="a",index=False,header=False)
+                for item in result:
+                    title = item['title']
+                    text = item['desc']
+                    link = item['link']
+                    news.append([title, text, link, x[0][i], x[1][i]])
+            except TypeError as e_parser:
+                print('Type Error')
+                news.append(['NO_TITLE', 'NO_DESC', 'NO_LINK', x[0][i], x[1][i]])
+            except:
+                break
+
+    df3 = pd.DataFrame(news)
+    df3.to_csv("news_new.csv", mode="a", index=False, header=False)
 
 
 
