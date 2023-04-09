@@ -59,7 +59,7 @@ async function fetchAllTrends(tickers, dateIntervals) {
             console.log(search);
             const formattedData = trendData.map((item) => {
                 return {
-                    keyword: ticker,
+                    symbol: ticker,
                     time: formatDate(item.time * 1000),
                     value: item.value[0],
                 };
