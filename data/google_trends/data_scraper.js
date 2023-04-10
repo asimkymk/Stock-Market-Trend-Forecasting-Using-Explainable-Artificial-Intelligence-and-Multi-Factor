@@ -2,12 +2,8 @@ const googleTrends = require('google-trends-api');
 const fs = require('fs');
 const { Parser } = require('json2csv');
 
-const tickers = [
-    'ATKR', 'BAC', 'BSGA', 'CSCO', 'CTRA', 'DKNG', 'ETRN',
-    'FDBC', 'FRC', 'GDEN', 'GMDA', 'GMVD', 'GNRC', 'GOOG', 'GRAB', 'HAIA', 'HBAN', 'HLMN', 'HSAI', 'HWCPZ',
-    'HYFM', 'IMAQ', 'INTC', 'IRMD', 'JBLU', 'MRVL', 'MSFT', 'NIO', 'NVDA', 'PHYS', 'RBLX', 'RIVN', 'ROKU',
-    'RPHM', 'SCHW', 'SNAP', 'TEAF', 'TSLA', 'UFAB', 'ULBI', 'VALE', 'XPEV', 'XTNT', 'YCBD'
-];
+const tickers =['HWCPZ', 'HYFM', 'IMAQ', 'INTC', 'IRMD', 'JBLU', 'MRVL', 'MSFT', 'NIO', 'NVDA', 'PHYS', 'RBLX', 'RIVN', 'ROKU', 'RPHM', 'SCHW', 'SNAP', 'TEAF', 'TSLA', 'UFAB', 'ULBI', 'VALE', 'XPEV', 'XTNT', 'YCBD']
+;
 
 const dateIntervals = [{ startDate: '2022-03-01', endDate: '2022-03-31' },
 { startDate: '2022-04-01', endDate: '2022-04-30' },
@@ -55,7 +51,7 @@ async function fetchAllTrends(ticker, interval) {
 
     try {
         console.log(`Fetching data for ${ticker} between ${interval.startDate} and ${interval.endDate}...`);
-        let search = "NASDAQ:" + ticker
+        let search =  ticker
         const trendData = await fetchTrendData(search, interval.startDate, interval.endDate);
         console.log(search);
         const formattedData = trendData.map((item) => {
@@ -85,8 +81,27 @@ async function main() {
         for (let interval of dateIntervals) {
 
             const allTrends = await fetchAllTrends(ticker, interval);
-            console.log(allTrends)
+            console.log(allTrends.length)
             console.log("------------------------")
+            if(allTrends.length==0){
+                console.log("girdi")
+                currentDate = new Date(interval.startDate);
+                endDate = new Date(interval.endDate);
+                while (currentDate <= endDate) {
+                    const year = currentDate.getFullYear();
+                    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(currentDate.getDate()).padStart(2, '0');
+                  
+                    const dateString = `${year}-${month}-${day}`;
+                    allTrends.push({
+                        keyword: ticker,
+                        time: dateString,
+                        value: 0,
+                    });
+                  
+                    currentDate.setDate(currentDate.getDate() + 1);
+                  }
+            }
             // Verileri CSV'ye dönüştür
             const json2csvParser = new Parser({ quote: '' }); // quote opsiyonunu boş bir string olarak ayarla
             const csvData = json2csvParser.parse(allTrends);
