@@ -48,8 +48,8 @@ def continue_news():
                 date_obj = datetime.strptime(tarih, '%Y-%m-%d')
                 yeni_tarih = date_obj.strftime('%m-%d-%Y')
                 googlenews = GoogleNews(start=yeni_tarih, end=yeni_tarih)
-                #googlenews.search('NASDAQ:' + x[1][i])
-                googlenews.search(x[1][i])
+                googlenews.search('NASDAQ:' + x[1][i])
+                #googlenews.search(x[1][i])
                 result = googlenews.result()
 
                 for item in result:
