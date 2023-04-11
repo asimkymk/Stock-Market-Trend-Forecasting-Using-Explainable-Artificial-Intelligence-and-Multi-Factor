@@ -4,22 +4,12 @@ import csv
 import re
 from GoogleNews import GoogleNews
 from datetime import datetime
-def testt():
-    tickers = ['AAPL', 'GOOG', 'MSFT']
+import os
 
-
-    df = pd.DataFrame()
-    for symbols in tickers:
-        ticker = Ticker(symbol=symbols,)
-        ticker.create_stock_data()
-        
-        df = pd.concat([df, ticker.create_news_data()])
-    print(df)
-    print("ok")
-
-    df.to_csv("tickers.csv",index=False,mode="a")
-
-    df.to_csv("news_new.csv",index=False)
+#TODO
+#Tüm haberler çekilecek.
+#Haberlerin içerikleri link verileri kullanılarak newspaper3k modülüyle toplanacak. 
+#Code refactoring.
 
 
 
@@ -27,18 +17,19 @@ def create_new_tickers_data():
     tickers = ['AAPL', 'AGNC', 'AMC', 'AMD', 'AMZN', 'APE', 'ATKR', 'BAC', 'BSGA', 'CSCO', 'CTRA', 'DKNG', 'ETRN', 'FDBC', 'FRC', 'GDEN', 'GMDA', 'GMVD', 'GNRC', 'GOOG', 'GRAB', 'HAIA', 'HBAN', 'HLMN', 'HSAI', 'HWCPZ', 'HYFM', 'IMAQ', 'INTC', 'IRMD', 'JBLU', 'MRVL', 'MSFT', 'NIO', 'NVDA', 'PHYS', 'RBLX', 'RIVN', 'ROKU', 'RPHM', 'SCHW', 'SNAP', 'TEAF', 'TSLA', 'UFAB', 'ULBI', 'VALE', 'XPEV', 'XTNT', 'YCBD']
     df = pd.DataFrame()
     for symbols in tickers:
+        #1 yıllık verileri tickers.csv ye yaz
         ticker = Ticker(symbol=symbols,start_date='2022-03-01',end_date='2023-04-04')
         ticker.create_stock_data()
         
         df = pd.concat([df, ticker.get_stock_data()])
-    print(df)
-    print("ok")
+    
 
     df.to_csv("tickers.csv",index=False)
 
     #df.to_csv("news_new.csv",index=False)
 
 def continue_news():
+    # Haberleri çekmeye devam et. Ban açıldıkçabu fonk. çalıştır.
     news = []
     df = pd.read_csv("tickers.csv")
 
@@ -75,8 +66,30 @@ def continue_news():
     df3 = pd.DataFrame(news)
     df3.to_csv("news_new.csv", mode="a", index=False, header=False)
 
+def collab_google_trends_data():
+    #nodejs ile toplanan google trend verilerini tek bir csv dosyasına at
+    folder_path = "data/google_trends/trend_datas"
 
+    csv_files = [f for f in os.listdir(folder_path) if f.endswith('.csv')]
 
+    combined_csv = pd.concat([pd.read_csv(os.path.join(folder_path, f)) for f in csv_files])
+
+    combined_csv.to_csv("all_trend_datas.csv", index=False, encoding='utf-8-sig',header=['symbol','Date','value'])
+
+def combine_tickers_with_trend_scores():
+    #toplanan tek csvdeki trend verilerini kullanacağımız ana csv dosyası olan tickers.csv yle birleştir.
+    tickers_df = pd.read_csv('tickers.csv')
+    trends_df = pd.read_csv('all_trend_datas.csv')
+
+    trends_df = trends_df[['symbol', 'Date', 'value']]
+
+    merged_df = pd.merge(tickers_df, trends_df, on=['Date', 'symbol'], how='left')
+
+    merged_df['value'] = merged_df['value'].fillna(0)
+
+    merged_df.to_csv('tickers.csv', index=False)
 
 continue_news()
 #create_new_tickers_data()
+#collab_google_trends_data()
+#combine_tickers_with_trend_scores()
