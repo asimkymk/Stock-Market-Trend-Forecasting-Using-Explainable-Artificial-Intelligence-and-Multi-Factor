@@ -2,8 +2,8 @@ const googleTrends = require('google-trends-api');
 const fs = require('fs');
 const { Parser } = require('json2csv');
 
-const tickers =['APE', 'ASML', 'ATKR', 'BAC', 'BBBY', 'BBIO', 'BLU', 'BMEA', 'BSGA', 'CSCO', 'CTRA', 'DKNG', 'ELYM', 'ERIC', 'ETRN', 'EXTR', 'FDBC', 'FRC', 'GDEN', 'GMDA', 'GMVD', 'GNRC', 'GOOG', 'GRAB', 'GRIN', 'HAIA', 'HBAN', 'HLMN', 'HSAI', 'HWCPZ', 'HYFM', 'IMAQ', 'INTC', 'IRMD', 'ISRG', 'JBLU', 'LCID', 'LUNR', 'MRVL', 'MSFT', 'NFLX', 'NIO', 'NVDA', 'PACW', 'PHYS', 'PSTX', 'RBLX', 'RIVN', 'ROKU', 'RPHM', 'SCHW', 'SGHT', 'SNAP', 'STRO', 'TEAF', 'TSLA', 'UAL', 'UFAB', 'ULBI', 'VALE', 'WAL', 'XPEV', 'XTNT', 'YCBD'];
-
+const tickers =[  'GNRC', 'GOOG', 'GRAB', 'GRIN', 'HAIA', 'HBAN', 'HLMN', 'HSAI', 'HWCPZ', 'HYFM', 'IMAQ', 'INTC', 'IRMD', 'ISRG', 'JBLU', 'LCID', 'LUNR', 'MRVL', 'MSFT', 'NFLX', 'NIO', 'NVDA', 'PACW', 'PHYS', 'PSTX', 'RBLX', 'RIVN', 'ROKU', 'RPHM', 'SCHW', 'SGHT', 'SNAP', 'STRO', 'TEAF', 'TSLA', 'UAL', 'UFAB', 'ULBI', 'VALE', 'WAL', 'XPEV', 'XTNT', 'YCBD']
+;
 const dateIntervals = [{ startDate: '2022-03-01', endDate: '2022-03-31' },
 { startDate: '2022-04-01', endDate: '2022-04-30' },
 { startDate: '2022-05-01', endDate: '2022-05-31' },
@@ -16,7 +16,8 @@ const dateIntervals = [{ startDate: '2022-03-01', endDate: '2022-03-31' },
 { startDate: '2022-12-01', endDate: '2022-12-31' },
 { startDate: '2023-01-01', endDate: '2023-01-31' },
 { startDate: '2023-02-01', endDate: '2023-02-28' },
-{ startDate: '2023-03-01', endDate: '2023-04-03' }]
+{ startDate: '2023-03-01', endDate: '2023-03-31' },
+{ startDate: '2023-04-01', endDate: '2023-04-30' }]
     ;
 
 async function fetchTrendData(keyword, startDate, endDate) {
@@ -50,7 +51,8 @@ async function fetchAllTrends(ticker, interval) {
 
     try {
         console.log(`Fetching data for ${ticker} between ${interval.startDate} and ${interval.endDate}...`);
-        let search =  'NASDAQ:' + ticker
+        let search =  'NASDAQ:' + ticker;
+        //search=ticker;
         const trendData = await fetchTrendData(search, interval.startDate, interval.endDate);
         console.log(search);
         const formattedData = trendData.map((item) => {
