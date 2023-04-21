@@ -6,7 +6,7 @@ from GoogleNews import GoogleNews
 from datetime import datetime
 import os
 from newspaper import Article
-
+from data.news_scraper import get_detailed_text_data
 #TODO
 #Tüm haberler çekilecek.
 #Haberlerin içerikleri link verileri kullanılarak newspaper3k modülüyle toplanacak. 
@@ -57,7 +57,12 @@ def continue_news():
                     title = item['title']
                     text = item['desc']
                     link = item['link']
-                    news.append([title, text, link, x[0][i], x[1][i],''])
+                    detailed_text = ''
+                    try:
+                        detailed_text = get_detailed_text_data(link)
+                    except:
+                        detailed_text = 'NO_DETAILED_TEXT'
+                    news.append([title, text, link, x[0][i], x[1][i],detailed_text])
             except TypeError as e_parser:
                 print('Type Error')
                 news.append(['NO_TITLE', 'NO_DESC', 'NO_LINK', x[0][i], x[1][i],'NO_DETAILED_TEXT'])

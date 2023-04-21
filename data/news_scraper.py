@@ -23,14 +23,14 @@ def get_detailed_text_data(news_link):
         raise Exception
 
 
-def get_news_all_data():
+def get_news_all_data(start_index):
     df = pd.read_csv("news_new.csv")
-    for index, row in df.iterrows():
+    for index in range(start_index,len(df)):
         try:
-            
+            row = df.iloc[index]
             news_link = row['link']
-            if not pd.notna(df.at[index, 'detailed_text']):
-                print(row['date'] + ' - ' + row['symbol'])
+            if  pd.isnull(row['detailed_text']):
+                print(str(index) + ' - ' + row['date'] + ' - ' + row['symbol'])
                 detailed_text = get_detailed_text_data(news_link)
                 
                 df.at[index,"detailed_text"] = detailed_text
@@ -45,7 +45,7 @@ def get_news_all_data():
             df.to_csv('news_new.csv', index=False)
             continue
 
-add_new_detailed_text_column()
-get_news_all_data()
+#add_new_detailed_text_column()
+#get_news_all_data()
 
 #fdonksiyonun çalışmasını herhangi bir csv güncelleniyor yazsısından hemen sonra yap.
