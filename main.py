@@ -5,6 +5,7 @@ import re
 from GoogleNews import GoogleNews
 from datetime import datetime
 import os
+from newspaper import Article
 
 #TODO
 #Tüm haberler çekilecek.
@@ -88,6 +89,10 @@ def combine_tickers_with_trend_scores():
     merged_df['value'] = merged_df['value'].fillna(0)
 
     merged_df.to_csv('tickers.csv', index=False)
+
+
+        
+    
 
 continue_news()
 #create_new_tickers_data()
