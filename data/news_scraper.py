@@ -45,5 +45,5 @@ def get_news_all_data():
             df.to_csv('news_new.csv', index=False)
             continue
 
-
+add_new_detailed_text_column()
 get_news_all_data()
