@@ -29,11 +29,14 @@ def get_news_all_data(start_index):
         try:
             row = df.iloc[index]
             news_link = row['link']
-            if  pd.isnull(row['detailed_text']):
-                print(str(index) + ' - ' + row['date'] + ' - ' + row['symbol'])
-                detailed_text = get_detailed_text_data(news_link)
-                
-                df.at[index,"detailed_text"] = detailed_text
+            if news_link == "NO_LINK" or pd.isnull(row['link']):
+                df.at[index,"detailed_text"] = 'NO_DETAILED_TEXT'
+            else:
+                if pd.isnull(row['detailed_text']):
+                    print(str(index) + ' - ' + row['date'] + ' - ' + row['symbol'])
+                    detailed_text = get_detailed_text_data(news_link)
+                    
+                    df.at[index,"detailed_text"] = detailed_text
             
                 
             if index % 20 == 0:
