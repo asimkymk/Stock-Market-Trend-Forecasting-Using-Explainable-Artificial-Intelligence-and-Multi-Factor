@@ -47,3 +47,5 @@ def get_news_all_data():
 
 add_new_detailed_text_column()
 get_news_all_data()
+
+#fdonksiyonun çalışmasını herhangi bir csv güncelleniyor yazsısından hemen sonra yap.
