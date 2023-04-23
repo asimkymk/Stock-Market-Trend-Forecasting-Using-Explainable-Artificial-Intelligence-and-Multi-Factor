@@ -30,6 +30,7 @@ def get_news_all_data(start_index):
             row = df.iloc[index]
             news_link = row['link']
             if news_link == "NO_LINK" or pd.isnull(row['link']):
+                print(str(index) + ' - ' + row['date'] + ' - ' + row['symbol'] + ' - NO_LINK')
                 df.at[index,"detailed_text"] = 'NO_DETAILED_TEXT'
             else:
                 if pd.isnull(row['detailed_text']):
@@ -43,10 +44,11 @@ def get_news_all_data(start_index):
                 print("CSV Güncelleniyor...")
                 df.to_csv('news_new.csv', index=False)
         except:
-            print("Veri Hatası")
+            print("Veri Hatası - " + news_link)
             df.at[index,"detailed_text"] = 'NO_DETAILED_TEXT'
-            df.to_csv('news_new.csv', index=False)
             continue
+    df.to_csv('news_new.csv', index=False)
+    print("Tüm haber detayları eklendi!")
 
 #add_new_detailed_text_column()
 #get_news_all_data()
