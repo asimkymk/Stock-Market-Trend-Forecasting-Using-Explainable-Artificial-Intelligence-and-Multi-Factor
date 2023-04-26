@@ -17,9 +17,10 @@ from data.news_scraper import get_detailed_text_data
 def create_new_tickers_data():
     tickers = ['AAL', 'AAPL', 'AGNC', 'AMC', 'AMD', 'AMZN', 'APE', 'ASML', 'ATKR', 'BAC', 'BBBY', 'BBIO', 'BLU', 'BMEA', 'BSGA', 'CSCO', 'CTRA', 'DKNG', 'ELYM', 'ERIC', 'ETRN', 'EXTR', 'FDBC', 'FRC', 'GDEN', 'GMDA', 'GMVD', 'GNRC', 'GOOG', 'GRAB', 'GRIN', 'HAIA', 'HBAN', 'HLMN', 'HSAI', 'HWCPZ', 'HYFM', 'IMAQ', 'INTC', 'IRMD', 'ISRG', 'JBLU', 'LCID', 'LUNR', 'MRVL', 'MSFT', 'NFLX', 'NIO', 'NVDA', 'PACW', 'PHYS', 'PSTX', 'RBLX', 'RIVN', 'ROKU', 'RPHM', 'SCHW', 'SGHT', 'SNAP', 'STRO', 'TEAF', 'TSLA', 'UAL', 'UFAB', 'ULBI', 'VALE', 'WAL', 'XPEV', 'XTNT', 'YCBD']
     df = pd.DataFrame()
-    for symbols in tickers:
+    for symbol in tickers:
         #1 yıllık verileri tickers.csv ye yaz
-        ticker = Ticker(symbol=symbols,start_date='2022-03-01',end_date='2023-04-18')
+        print('Symbol : ' + symbol)
+        ticker = Ticker(symbol=symbol,start_date='2022-03-01',end_date='2023-04-26')
         ticker.create_stock_data()
         
         df = pd.concat([df, ticker.get_stock_data()])
@@ -99,7 +100,7 @@ def combine_tickers_with_trend_scores():
         
     
 
-continue_news()
-#create_new_tickers_data()
+#continue_news()
+create_new_tickers_data()
 #collab_google_trends_data()
 #combine_tickers_with_trend_scores()
