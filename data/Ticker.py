@@ -64,12 +64,14 @@ class Ticker:
             
             self.__stock_data = self.__stock_data.reset_index()
             self.__stock_data['symbol'] = self.__symbol
-            try:
+            if len(self.__long_name) == 0:
 
-                tmp = yf.Ticker(self.__symbol)
-                self.__long_name = tmp.info['longName']
-            except:
-                self.__long_name = 'NO_LONG_NAME_DATA'
+                try:
+
+                    tmp = yf.Ticker(self.__symbol)
+                    self.__long_name = tmp.info['longName']
+                except:
+                    self.__long_name = 'NO_LONG_NAME_DATA'
             self.__stock_data['long_name'] = self.__long_name
             return True
         except:
