@@ -61,11 +61,16 @@ class Ticker:
                 self.__stock_data = yf.download(self.__symbol,period=self.__period)
             else:
                 self.__stock_data = yf.download(self.__symbol,start=self.__start_date,end=self.__end_date,period=self.__period)
-            tmp = yf.Ticker(self.__symbol)
-            self.__long_name = tmp.info['longName']
+            
             self.__stock_data = self.__stock_data.reset_index()
             self.__stock_data['symbol'] = self.__symbol
-            self.__stock_data['long_name'] = self.__longName
+            try:
+
+                tmp = yf.Ticker(self.__symbol)
+                self.__long_name = tmp.info['longName']
+            except:
+                self.__long_name = 'NO_LONG_NAME_DATA'
+            self.__stock_data['long_name'] = self.__long_name
             return True
         except:
             return False
