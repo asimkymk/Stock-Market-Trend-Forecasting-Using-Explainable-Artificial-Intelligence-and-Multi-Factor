@@ -15,10 +15,11 @@ def check_folder_status(folder_path):
 
 class Ticker:
 
-    def __init__(self,symbol="",stock_data = "", period="6mo",folder_path="one_symbol",start_date="",end_date=''):
+    def __init__(self,symbol="",stock_data = "", long_name = '', period="6mo",folder_path="one_symbol",start_date="",end_date=''):
         self.__symbol = symbol
         self.__period = period
         self.__stock_data = stock_data
+        self.__long_name = long_name
         self.__folder_path = folder_path
         self.__start_date = start_date
         self.__end_date = end_date
@@ -42,6 +43,12 @@ class Ticker:
     def get_stock_data(self,):
         return self.__stock_data
     
+    def set_long_name(self,long_name):
+        self.__long_name = long_name
+
+    def get_long_name(self,):
+        return self.__long_name
+    
     def set_folder_path(self,folder_path):
         self.__folder_path = folder_path
 
@@ -52,14 +59,14 @@ class Ticker:
         try:
             if self.__start_date == '' and self.__end_date:
                 self.__stock_data = yf.download(self.__symbol,period=self.__period)
-                self.__stock_data = self.__stock_data.reset_index()
-                self.__stock_data['symbol'] = self.__symbol
-                return True
             else:
-                self.__stock_data = yf.download(self.__symbol,start=self.__start_date,end=self.__end_date,period="1d")
-                self.__stock_data = self.__stock_data.reset_index()
-                self.__stock_data['symbol'] = self.__symbol
-                return True
+                self.__stock_data = yf.download(self.__symbol,start=self.__start_date,end=self.__end_date,period=self.__period)
+            tmp = yf.Ticker(self.__symbol)
+            self.__long_name = tmp.info['longName']
+            self.__stock_data = self.__stock_data.reset_index()
+            self.__stock_data['symbol'] = self.__symbol
+            self.__stock_data['long_name'] = self.__longName
+            return True
         except:
             return False
 
