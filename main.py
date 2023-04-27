@@ -177,7 +177,7 @@ def combine_tickers_with_trend_scores():
     merged_df.to_csv('tickers.csv', index=False)
 
 
-#continue_news()
-create_new_tickers_data()
+continue_news()
+#create_new_tickers_data()
 # collab_google_trends_data()
 # combine_tickers_with_trend_scores()
