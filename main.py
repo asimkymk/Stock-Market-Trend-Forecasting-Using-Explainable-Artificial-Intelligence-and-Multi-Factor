@@ -9,7 +9,6 @@ from newspaper import Article
 from data.news_scraper import get_detailed_text_data
 # TODO
 # Tüm haberler çekilecek.
-# Haberlerin içerikleri link verileri kullanılarak newspaper3k modülüyle toplanacak.
 # Code refactoring.
 
 longNames = {
