@@ -180,5 +180,5 @@ def combine_tickers_with_trend_scores():
 
 #continue_news()
 #create_new_tickers_data()
-# collab_google_trends_data()
-# combine_tickers_with_trend_scores()
+#collab_google_trends_data()
+combine_tickers_with_trend_scores()
