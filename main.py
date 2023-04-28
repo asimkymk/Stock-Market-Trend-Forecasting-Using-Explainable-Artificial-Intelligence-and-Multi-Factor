@@ -173,6 +173,7 @@ def combine_tickers_with_trend_scores():
 
     merged_df['value'] = merged_df['value'].fillna(0)
 
+    merged_df = merged_df.rename(columns={'value': 'trend_score'})
     merged_df.to_csv('tickers.csv', index=False)
 
 
