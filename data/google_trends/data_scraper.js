@@ -2,7 +2,7 @@ const googleTrends = require('google-trends-api');
 const fs = require('fs');
 const { Parser } = require('json2csv');
 
-const tickers =['AAL', 'AAPL', 'AGNC', 'AMC', 'AMD', 'AMZN', 'APE', 'ASML', 'ATKR', 'BAC', 'BBBY', 'BBIO', 'BLU', 'BMEA', 'BSGA', 'CSCO', 'CTRA', 'DKNG', 'ELYM', 'ERIC', 'ETRN', 'EXTR', 'FDBC', 'FRC', 'GDEN', 'GMDA', 'GMVD', 'GNRC', 'GOOG', 'GRAB', 'GRIN', 'HAIA', 'HBAN', 'HLMN', 'HSAI', 'HWCPZ', 'HYFM', 'IMAQ', 'INTC', 'IRMD', 'ISRG', 'JBLU', 'LCID', 'LUNR', 'MRVL', 'MSFT', 'NFLX', 'NIO', 'NVDA', 'PACW', 'PHYS', 'PSTX', 'RBLX', 'RIVN', 'ROKU', 'RPHM', 'SCHW', 'SGHT', 'SNAP', 'STRO', 'TEAF', 'TSLA', 'UAL', 'UFAB', 'ULBI', 'VALE', 'WAL', 'XPEV', 'XTNT', 'YCBD']
+const tickers =[ 'HWCPZ', 'HYFM', 'IMAQ', 'INTC', 'IRMD', 'ISRG', 'JBLU', 'LCID', 'LUNR', 'MRVL', 'MSFT', 'NFLX', 'NIO', 'NVDA', 'PACW', 'PHYS', 'PSTX', 'RBLX', 'RIVN', 'ROKU', 'RPHM', 'SCHW', 'SGHT', 'SNAP', 'STRO', 'TEAF', 'TSLA', 'UAL', 'UFAB', 'ULBI', 'VALE', 'WAL', 'XPEV', 'XTNT', 'YCBD']
 ;
 const dateIntervals = [{ startDate: '2022-03-01', endDate: '2022-03-31' },
 { startDate: '2022-04-01', endDate: '2022-04-30' },
@@ -51,7 +51,7 @@ async function fetchAllTrends(ticker, interval) {
 
     try {
         console.log(`Fetching data for ${ticker} between ${interval.startDate} and ${interval.endDate}...`);
-        let search =  'NASDAQ:' + ticker;
+        let search =  ticker;
         search=ticker;
         const trendData = await fetchTrendData(search, interval.startDate, interval.endDate);
         console.log(search);
