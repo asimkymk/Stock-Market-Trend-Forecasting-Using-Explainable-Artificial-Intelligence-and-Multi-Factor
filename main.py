@@ -1,11 +1,9 @@
 from data.Ticker import Ticker
 import pandas as pd
 import csv
-import re
 from GoogleNews import GoogleNews
 from datetime import datetime
 import os
-from newspaper import Article
 from data.news_scraper import get_detailed_text_data
 from data.news_scorer import NewsScorer
 from model.data_virtualizer import *
