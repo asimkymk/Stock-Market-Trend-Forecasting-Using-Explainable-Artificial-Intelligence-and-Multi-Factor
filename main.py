@@ -260,12 +260,3 @@ def create_daily_news_score(start_index):
     print("CSV Kaydedildi...")
     df.to_csv('tickers.csv', index=False)
 
-
-# continue_news()
-# create_new_tickers_data()
-# collab_google_trends_data()
-# combine_tickers_with_trend_scores()
-#create_daily_news_score(0)
-
-#check_folder('AAL')
-#show_all_data('AAL')
