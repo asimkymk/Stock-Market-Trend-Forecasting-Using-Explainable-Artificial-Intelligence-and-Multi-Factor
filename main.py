@@ -8,7 +8,7 @@ import os
 from newspaper import Article
 from data.news_scraper import get_detailed_text_data
 from data.news_scorer import NewsScorer
-
+from model.data_virtualizer import *
 # TODO
 # Tüm haberler çekilecek.
 # Code refactoring.
@@ -265,4 +265,7 @@ def create_daily_news_score(start_index):
 # create_new_tickers_data()
 # collab_google_trends_data()
 # combine_tickers_with_trend_scores()
-create_daily_news_score(0)
+#create_daily_news_score(0)
+
+check_folder('AAL')
+show_all_data('AAL')
