@@ -200,50 +200,65 @@ def create_daily_news_score(start_index):
     news = pd.read_csv("news_new.csv")
     ns = NewsScorer()
     for index in range(start_index, len(df)):
-        #try:
-        print(index)
-        row = df.iloc[index]
-        symbol = row["symbol"]
-        date = row["Date"]
-        long_name = row["long_name"]
-        filtered_df = news[(news["symbol"] == symbol) & (news["date"] == date)]
-        titles = []
-        texts = []
-        dates = []
-        #toplam = 0
-        for index_nw, row_news in filtered_df.iterrows():
-            if row_news["link"] != "NO_LINK":
-                if not pd.isnull(row_news['title']):
-                    if (
-                        symbol
-                        in row_news["title"]
-                        + " "
-                        + row_news["text"]
-                        + " "
-                        + row_news["detailed_text"]
-                        or long_name
-                        in row_news["title"]
-                        + row_news["text"]
-                        + " "
-                        + row_news["detailed_text"]
-                    ):
-                        titles.append(row_news["title"])
-                        texts.append(row_news["text"] + " " + row_news["detailed_text"])
-                        dates.append(row_news["date"])
-                        #toplam += ns.sentiment_analysis(str(row_news["title"]) + ' ' + str(row_news["text"]) + ' ' + str(row_news["detailed_text"]))
+        try:
+            row = df.iloc[index]
+            symbol = row["symbol"]
+            date = row["Date"]
+            long_name = row["long_name"]
+            filtered_df = news[(news["symbol"] == symbol) & (news["date"] == date)]
+            titles = []
+            texts = []
+            dates = []
+            toplam_metod_1 = 0
+            toplam_metod_2 = 0
+            for index_nw, row_news in filtered_df.iterrows():
+                if row_news["link"] != "NO_LINK":
+                    if not pd.isnull(row_news['title']):
+                        if (
+                            symbol
+                            in row_news["title"]
+                            + " "
+                            + row_news["text"]
+                            + " "
+                            + row_news["detailed_text"]
+                            or long_name
+                            in row_news["title"]
+                            + row_news["text"]
+                            + " "
+                            + row_news["detailed_text"]
+                        ):
+                            titles.append(row_news["title"])
+                            texts.append(row_news["text"] + " " + row_news["detailed_text"])
+                            dates.append(row_news["date"])
+                            toplam_metod_1 += ns.sentiment_analysis_metod_1(str(row_news["title"]) + ' ' + str(row_news["text"]) + " " + str(row_news["detailed_text"]))
+                            toplam_metod_2 += ns.sentiment_analysis_metod_2(str(row_news["title"]) + ' ' + str(row_news["text"]) + " " + str(row_news["detailed_text"]))['compound']
+                
+            data = {
+                "date": dates,
+                "title": titles,
+                "text": texts,
+            }
+                
+            temp_df = pd.DataFrame(data)
+            ns.set_news_data(temp_df)
+            ns.create_scored_data()
+            score = ns.get_average_score()[date]
             
-        data = {
-            "date": dates,
-            "title": titles,
-            "text": texts,
-        }
-            
-        temp_df = pd.DataFrame(data)
-        ns.set_news_data(temp_df)
-        ns.create_scored_data()
-        print(ns.get_average_score()[date])
-        #print(toplam / len(filtered_df))
-        
+            df.at[index,"news_score_model1"] = score
+            df.at[index,"news_score_model2"] = toplam_metod_1
+            df.at[index,"news_score_model3"] = toplam_metod_2
+            if index % 20 == 0:
+                print("CSV Güncelleniyor...")
+                df.to_csv('tickers.csv', index=False)
+            print(str(index) + ' - ' + symbol + ' - ' + date + ' - ' + str(score) + ' - ' + str(toplam_metod_1) + ' - ' + str(toplam_metod_2))
+        except Exception as e:
+            print(e)
+            df.at[index,"news_score_model1"] = 0
+            df.at[index,"news_score_model2"] = 0
+            df.at[index,"news_score_model3"] = 0
+            print(str(index) + ' - ' + symbol + ' - ' + date + ' - ' + str(0) + ' - ' + str(0) + ' - ' + str(0))
+    print("CSV Kaydedildi...")
+    df.to_csv('tickers.csv', index=False)
 
 
 # continue_news()

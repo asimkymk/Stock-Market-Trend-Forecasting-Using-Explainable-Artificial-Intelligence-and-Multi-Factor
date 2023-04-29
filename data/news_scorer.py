@@ -43,7 +43,7 @@ from nltk.stem import WordNetLemmatizer
 from textblob import TextBlob
 import pandas as pd
 
-
+from nltk.sentiment import SentimentIntensityAnalyzer
 class NewsScorer:
     def __init__(self):
         self.news_data = pd.DataFrame()
@@ -53,6 +53,7 @@ class NewsScorer:
         nltk.download('wordnet')
         nltk.download('averaged_perceptron_tagger')
         nltk.download('brown')
+        nltk.download('vader_lexicon')
 
     def set_news_data(self, news_data):
         self.news_data = news_data
@@ -87,7 +88,7 @@ class NewsScorer:
             shared_text_words = text_unique_words.intersection(unique_words)
             title_score = sum([sentiment * blob.words.count(word) for word in shared_title_words])
             text_score = sum([sentiment * blob.words.count(word) for word in shared_text_words])
-            score = title_score + text_score
+            score = (title_score*2 + text_score*8)/10
             scores.append(score)
 
         self.scored_data = self.news_data.copy()
@@ -95,16 +96,22 @@ class NewsScorer:
 
     def get_average_score(self):
         daily_mean = self.scored_data.groupby('date')['news_score'].mean()
-        print(daily_mean)
         return daily_mean
 
     
-    def sentiment_analysis(self, news_text):
+    def sentiment_analysis_metod_1(self, news_text):
         analysis = TextBlob(news_text)
         
         # Polarity: -1 (olumsuz) ile 1 (olumlu) arasında bir değer alır.
         return analysis.sentiment.polarity
-        
+    
+    def sentiment_analysis_metod_2(self,text):
+        sia = SentimentIntensityAnalyzer()
+        return sia.polarity_scores(text)
+
+        # Haber başlığı ve içeriğinin duyarlılık puanlarını kullanarak genel haber duyarlılık puanını hesaplayın
+        return (baslik_duyarlilik['compound'] + metin_duyarlilik['compound']) / 2
+
         
 
         
