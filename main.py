@@ -267,5 +267,5 @@ def create_daily_news_score(start_index):
 # combine_tickers_with_trend_scores()
 #create_daily_news_score(0)
 
-check_folder('AAL')
-show_all_data('AAL')
+#check_folder('AAL')
+#show_all_data('AAL')
