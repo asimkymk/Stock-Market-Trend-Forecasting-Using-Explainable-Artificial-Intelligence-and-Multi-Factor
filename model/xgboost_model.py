@@ -3,16 +3,27 @@ import xgboost as xgb
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
 # Veri dosyasını oku
 data = pd.read_csv('tickers.csv')
 
 data = data[(data["symbol"] == 'AAL')]
+data['Date'] = pd.to_datetime(data['Date'])
+data = data.set_index('Date')
 # Özellikler ve hedef değişken ayırma
-X = data[['trend_score', 'news_score_model2', 'Adj Close']]
+X = data[['trend_score', 'news_score_model3', 'Adj Close']]
 y = data['Adj Close']
 
+tarih = '2023-02-01'
 # Eğitim ve test verileri ayırma
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+X_train = X[X.index < tarih]
+y_train = y[y.index < tarih]
+
+# Seçilen tarihten sonraki verileri test verileri olarak kullanın
+X_test = X[X.index >= tarih]
+y_test = y[y.index >= tarih]
+#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 # XGBoost modeli
 xgb_model = xgb.XGBRegressor(objective='reg:squarederror', colsample_bytree=0.3, learning_rate=0.1,
@@ -28,10 +39,15 @@ print(adj_close_pred)
 # Model performansını değerlendirme
 mse = mean_squared_error(y_test, adj_close_pred)
 print("Mean Squared Error: %.2f" % mse)
-
+plt.plot(X_test.index, adj_close_pred,color='blue')
+plt.plot(X_test.index, y_test,color='red')
+plt.xlabel('Date')
+plt.ylabel('News Score Model 1')
+plt.title('News Score Model 1 by Date')
+plt.show()
 
 import shap
-
+X = X.reset_index(drop=True)
 explainer = shap.TreeExplainer(xgb_model)
 shap_values = explainer.shap_values(X)
 expected_value = explainer.expected_value
@@ -62,3 +78,6 @@ shap.force_plot(explainer.expected_value, shap_values[0,:], X.iloc[0,:])
 
 # Generate Decision plot 
 shap.decision_plot(expected_value, shap_values[79],link='logit' ,features=X.loc[79,:], feature_names=(X.columns.tolist()),show=True,title="Decision Plot")
+
+
+
