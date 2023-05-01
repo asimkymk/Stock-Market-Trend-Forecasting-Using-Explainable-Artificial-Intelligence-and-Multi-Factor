@@ -7,15 +7,15 @@ import matplotlib.pyplot as plt
 # Veri dosyasını oku
 data = pd.read_csv('tickers.csv')
 
-data = data[(data["symbol"] == 'AAL')]
+data = data[(data["symbol"] == 'MSFT')]
 data['Date'] = pd.to_datetime(data['Date'])
 data = data.set_index('Date')
 data = data.sort_values('Date')
 # Özellikler ve hedef değişken ayırma
-X = data[['trend_score', 'news_score_model1', 'Adj Close']]
+X = data[['trend_score', 'news_score_model3']]
 y = data['Adj Close']
 
-tarih = '2023-02-01'
+tarih = '2023-01-01'
 # Eğitim ve test verileri ayırma
 
 X_train = X[X.index < tarih]
