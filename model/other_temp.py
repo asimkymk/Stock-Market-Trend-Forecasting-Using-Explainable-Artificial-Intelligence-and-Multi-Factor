@@ -3,6 +3,7 @@ import numpy as np
 import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.linear_model import LinearRegression, Ridge, ElasticNet
+from statsmodels.tsa.statespace.sarimax import SARIMAX
 from sklearn.metrics import mean_squared_error
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
@@ -100,6 +101,9 @@ ridge_forecast = ridge_model.predict(X_test)
 elasticnet_model = ElasticNet(alpha=1, l1_ratio=0.5)
 elasticnet_model.fit(X_train, y_train)
 elasticnet_forecast = elasticnet_model.predict(X_test)
+
+#SARIMAX
+
 # Tahminlerin performansını değerlendirme
 models = {
     "ARIMA": arima_forecast,
