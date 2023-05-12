@@ -1,16 +1,20 @@
-from flask import Flask, send_from_directory
+from flask import Flask, jsonify, request
 from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS #comment this on deployment
-from api.HelloApiHandler import HelloApiHandler
-from api.UserApiHandler import UserApiHandler
+import hashlib
+from flask_jwt import JWT, jwt_required, current_identity
 app = Flask(__name__, static_url_path='', static_folder='frontend/build')
 CORS(app) #comment this on deployment
 api = Api(app)
+app.config['SECRET_KEY'] = 'super-secret'
+
 #BACKEND
-@app.route("/", defaults={'path':''})
-def serve(path):
-    return send_from_directory(app.static_folder,'index.html')
 
-api.add_resource(HelloApiHandler, '/flask/hello')
+@app.route('/model/<string:symbol>', methods=['GET'])
+def  getfeecback(symbol):
+    try:
+        print(symbol)
+        return jsonify(symbol), 200
+    except:
+        return jsonify({'error': 'Database error!'}), 400
 
-api.add_resource(UserApiHandler, '/user')

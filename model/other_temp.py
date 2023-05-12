@@ -93,7 +93,7 @@ xgb_model.fit(X_train, y_train)
 xgb_forecast = xgb_model.predict(X_test)
 
 # Ridge
-ridge_model = Ridge(alpha=1)
+ridge_model = Ridge(alpha= 10)
 ridge_model.fit(X_train, y_train)
 ridge_forecast = ridge_model.predict(X_test)
 
