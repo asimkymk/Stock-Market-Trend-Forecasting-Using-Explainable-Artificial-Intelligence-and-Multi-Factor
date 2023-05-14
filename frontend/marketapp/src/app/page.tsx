@@ -1,113 +1,196 @@
-import Image from 'next/image'
+'use client'
+import React, { useState,useEffect,useRef } from "react";
+const longNames = {
+  "AAL": "American Airlines",
+  "AAPL": "Apple",
+  "AGNC": "AGNC Investment",
+  "AMC": "AMC Entertainment",
+  "AMD": "Advanced Micro Devices",
+  "AMZN": "Amazon",
+  "ASML": "ASML Holding",
+  "ATKR": "Atkore",
+  "BAC": "Bank of America",
+  "BBBY": "Bed Bath & Beyond",
+  "BBIO": "BridgeBio Pharma",
+  "BLU": "BELLUS Health",
+  "BMEA": "Biomea Fusion",
+  "BSGA": "Blue Safari Group Acquisition",
+  "CSCO": "Cisco",
+  "CTRA": "Coterra Energy",
+  "DKNG": "DraftKings",
+  "ELYM": "Eliem Therapeutics",
+  "ERIC": "Ericsson",
+  "ETRN": "Equitrans Midstream",
+  "EXTR": "Extreme Networks",
+  "FDBC": "Fidelity D&D Bancorp",
+  "FRC": "First Republic Bank",
+  "GDEN": "Golden Entertainment",
+  "GMDA": "Gamida Cell",
+  "GMVD": "G Medical Innovations",
+  "GNRC": "Generac",
+  "GOOG": "Alphabet",
+  "GRAB": "Grab Holdings",
+  "GRIN": "Grindrod Shipping Holdings",
+  "HAIA": "Healthcare AI Acquisition",
+  "HBAN": "Huntington Bancshares",
+  "HLMN": "Hillman Solutions",
+  "HSAI": "Hesai Group",
+  "HWCPZ": "Hancock Whitney",
+  "HYFM": "Hydrofarm Holdings",
+  "IMAQ": "International Media Acquisition",
+  "INTC": "Intel",
+  "IRMD": "iRadimed",
+  "ISRG": "Intuitive Surgical",
+  "JBLU": "JetBlue Airways",
+  "LCID": "Lucid Group",
+  "LUNR": "Intuitive Machines",
+  "MRVL": "Marvell Technology",
+  "MSFT": "Microsoft",
+  "NFLX": "Netflix",
+  "NIO": "Nio",
+  "NVDA": "Nvidia",
+  "PACW": "PacWest Bancorp",
+  "PHYS": "Sprott Physical Gold Trust",
+  "PSTX": "Poseida Therapeutics",
+  "RBLX": "Roblox",
+  "RIVN": "Rivian",
+  "ROKU": "Roku",
+  "RPHM": "Reneo Pharmaceuticals",
+  "SCHW": "Charles Schwab",
+  "SGHT": "Sight Sciences",
+  "SNAP": "Snap",
+  "STRO": "Sutro Biopharma",
+  "TEAF": "Ecofin Sustainble",
+  "TSLA": "Tesla",
+  "UAL": "United Airlines",
+  "UFAB": "Unique Fabricating",
+  "ULBI": "Ultralife",
+  "VALE": "Vale",
+  "WAL": "Western Alliance",
+  "XPEV": "XPeng",
+  "XTNT": "Xtant Medical",
+  "YCBD": "cbdMD",
+}
 
-export default function Home() {
+const YourComponent = () => {
+  const [inputValue, setInputValue] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const iframeRef = useRef(null);
+  const handleInputChange = (e) => {
+
+    const value = e.target.value;
+    setInputValue(value);
+    if (value == '') {
+      setSuggestions([]);
+    }
+    else {
+      const matchedNames = Object.entries(longNames).filter(
+        ([key, name]) =>
+          key.toLowerCase().includes(value.toLowerCase()) ||
+          name.toLowerCase().includes(value.toLowerCase())
+      );
+      setSuggestions(matchedNames);
+    }
+    // Tamamlama önerilerini oluştur
+
+
+
+  };
+
+  const handleSuggestionClick = (name) => {
+    setInputValue(name);
+    setSuggestions([]);
+  };
+  useEffect(() => {
+    // iframe'in yüksekliğini ayarla
+    const resizeIframe = () => {
+      if (iframeRef.current) {
+        iframeRef.current.style.height = `${window.innerHeight}px`;
+      }
+    };
+    resizeIframe();
+    window.addEventListener("resize", resizeIframe);
+    return () => {
+      window.removeEventListener("resize", resizeIframe);
+    };
+  }, []);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="flex min-h-screen flex-col px-24 bg-white">
+      <nav navbar-main className="relative flex flex-wrap items-center justify-between w-full px-0 py-2 mx-6 mt-6 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-scroll="true">
+        <div className="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+          <nav>
+            <ol className="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+              <li className="leading-normal text-sm breadcrumb-item">
+                <a className="opacity-30 text-white" href="javascript:;">
+                  <svg width="12px" height="12px" className="mb-1" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <title>shop</title>
+                    <g className="fill-white" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                      <g className="fill-white" transform="translate(-1716.000000, -439.000000)" fill="#252f40" fillRule="nonzero">
+                        <g className="fill-white" transform="translate(1716.000000, 291.000000)">
+                          <g className="fill-white" transform="translate(0.000000, 148.000000)">
+                            <path d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"></path>
+                            <path
+                              d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z"
+                            ></path>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </svg>
+                </a>
+              </li>
+              <li className="text-sm pl-2 leading-normal before:float-left before:pr-2  before:content-['/']">
+                <a className="text-white opacity-50" href="javascript:;">Pages</a>
+              </li>
+              <li className="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2  before:content-['/'] text-white before:text-white" aria-current="page">Home</li>
+            </ol>
+            <h6 className="mb-0 font-bold text-white capitalize">Stock Market Trend Forecasting Using Explainable Artificial Intelligence and Multi-Factor</h6>
+          </nav>
+
+          <div className="flex items-center">
+            <a mini-sidenav-burger href="javascript:;" className="hidden p-0 transition-all ease-nav-brand text-sm text-slate-500 xl:block" aria-expanded="false">
+              <div className="w-4.5 overflow-hidden">
+                <i className="ease-soft mb-0.75 relative block h-0.5 translate-x-[5px] rounded-sm transition-all bg-white"></i>
+                <i className="ease-soft mb-0.75 relative block h-0.5 rounded-sm transition-all bg-white"></i>
+                <i className="ease-soft relative block h-0.5 translate-x-[5px] rounded-sm transition-all bg-white"></i>
+              </div>
+            </a>
+          </div>
+
+          <div className="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto" id="navbar">
+            <div className="flex items-center md:ml-auto md:pr-4">
+              <div className="">
+
+                <input type="text" className="pl-9 text-sm focus:shadow-soft-primary-outline bg-gray-950 placeholder:text-white/80 text-white/80 ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-white bg-clip-padding py-2 pr-3 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow" placeholder="Type ticker here..."
+                  value={inputValue}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+          </div>
         </div>
+      </nav>
+      <div className="overflow-y-auto mt-5 self-end"
+        style={{ maxHeight: '15rem' }}>
+        {suggestions.map(([key, name]) => (
+          <button
+            key={key}
+            className="text-white self-start bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 block mb-2"
+
+            onClick={() => handleSuggestionClick(name)}
+          >
+            {name}
+          </button>
+
+        ))}
+        <div className="mr-5"></div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div style={{ height: 'auto' }}>
+      <iframe src="http://127.0.0.1:8050/" ref={iframeRef} frameborder="0" className="px-0 py-2 mx-6 mt-6 transition-all w-full h-full" scrolling="no" ></iframe>
       </div>
     </main>
-  )
-}
+  );
+};
+
+export default YourComponent;
