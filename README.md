@@ -1,6 +1,13 @@
 # Stock Market Trend Forecasting Using Explainable Artificial Intelligence and Multi-Factor
 
-[__TOC__]
+## Contents
+1. [Abstract](#abstract)
+2. [Introduction](#introduction)
+3. [Methods](#methods)
+4. [Results](#results)
+5. [Installation](#installation)
+6. [Usage](#usage)
+7. [Conclusion](#conclusion)
 
 ## Abstract
 
