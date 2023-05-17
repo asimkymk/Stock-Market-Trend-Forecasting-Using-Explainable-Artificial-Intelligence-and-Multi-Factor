@@ -1,5 +1,8 @@
 'use client'
 import React, { useState,useEffect,useRef } from "react";
+import ReactMarkdown from 'react-markdown'
+import Home from "./home";
+
 const longNames = {
   "AAL": "American Airlines",
   "AAPL": "Apple",
@@ -76,7 +79,7 @@ const YourComponent = () => {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const iframeRef = useRef(null);
-  const handleInputChange = (e) => {
+const handleInputChange = (e) => {
 
     const value = e.target.value;
     setInputValue(value);
@@ -117,7 +120,7 @@ const YourComponent = () => {
 
   return (
     <main className="flex min-h-screen flex-col px-24 bg-white">
-      <nav navbar-main className="relative flex flex-wrap items-center justify-between w-full px-0 py-2 mx-6 mt-6 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-scroll="true">
+      <nav navbar-main className="relative flex flex-wrap items-center justify-between w-full px-0 py-2 mt-6 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-scroll="true">
         <div className="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
           <nav>
             <ol className="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
@@ -143,7 +146,7 @@ const YourComponent = () => {
               <li className="text-sm pl-2 leading-normal before:float-left before:pr-2  before:content-['/']">
                 <a className="text-white opacity-50" href="javascript:;">Pages</a>
               </li>
-              <li className="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2  before:content-['/'] text-white before:text-white" aria-current="page">Home</li>
+              <li className="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2  before:content-['/'] text-white before:text-white" aria-current="page">Ticker Analyze</li>
             </ol>
             <h6 className="mb-0 font-bold text-white capitalize">Stock Market Trend Forecasting Using Explainable Artificial Intelligence and Multi-Factor</h6>
           </nav>
@@ -170,13 +173,14 @@ const YourComponent = () => {
             </div>
           </div>
         </div>
+       
       </nav>
-      <div className="overflow-y-auto mt-5 self-end"
-        style={{ maxHeight: '15rem' }}>
+      <div className="overflow-y-auto transition-all bg-gray-950/80 ease-soft-in rounded-2xl"
+        style={{ maxHeight: '10rem',position:'absolute',right:100,top:90,zIndex:1, minWidth:275 }}>
         {suggestions.map(([key, name]) => (
           <button
             key={key}
-            className="text-white self-start bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 block mb-2"
+            className="text-white block mt-1 mb-2 ml-2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
 
             onClick={() => handleSuggestionClick(name)}
           >
@@ -186,9 +190,9 @@ const YourComponent = () => {
         ))}
         <div className="mr-5"></div>
       </div>
-      <div style={{ height: 'auto' }}>
-      <iframe src="http://127.0.0.1:8050/" ref={iframeRef} frameborder="0" className="px-0 py-2 mx-6 mt-6 transition-all w-full h-full" scrolling="no" ></iframe>
-      </div>
+      <Home></Home>
+      
+      
     </main>
   );
 };
