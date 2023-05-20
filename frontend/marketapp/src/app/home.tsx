@@ -6,7 +6,7 @@ const Home = () => {
 
 
     return (
-        <div className="relative  w-full px-3 py-2 mt-5 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start">
+        <div className="relative  w-full px-3 py-2 mt-2 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start">
             <ReactMarkdown># Stock Market Trend Forecasting Using Explainable Artificial Intelligence and Multi-Factor</ReactMarkdown>
             
            
@@ -21,12 +21,32 @@ const Home = () => {
             <ReactMarkdown>## Results</ReactMarkdown>
             <ReactMarkdown>Our experiments reveal that different models perform differently based on the dataset and context. After careful evaluation, we select the best-performing model based on its overall accuracy and consistency. The chosen model is then integrated with various XAI techniques, including SHAP, LIME, SHAPASH, and explainerdashboard, to provide interpretability and insights into the factors driving the predictions.</ReactMarkdown>
             <ReactMarkdown>## Installation</ReactMarkdown>
+            <ReactMarkdown>- For Python modules</ReactMarkdown>
             <ReactMarkdown>```
                 pip install -r requirements.txt
                 ```
             </ReactMarkdown>
+            <ReactMarkdown>- For frontend Nextjs UI</ReactMarkdown>
+            <ReactMarkdown>```
+                cd .\frontend\marketapp\```</ReactMarkdown><ReactMarkdown>```
+                npm i
+                ```
+            </ReactMarkdown>
             <ReactMarkdown>## Usage</ReactMarkdown>
-            <ReactMarkdown>Will be added.</ReactMarkdown>
+            <ReactMarkdown>**Warning**</ReactMarkdown>
+            <ReactMarkdown>Make sure that your localhost 8050, 3000 and 5000 ports are empty and available.</ReactMarkdown>
+            <ReactMarkdown>- First, home directory of project run backend</ReactMarkdown>
+            <ReactMarkdown>```
+                flask run
+                ```
+            </ReactMarkdown>
+            <ReactMarkdown>Some Python version(s) might occur standart library's ImportModule error. You can use Python with version **3.9.6** if any error of them occurs.</ReactMarkdown>
+            <ReactMarkdown>- Then you can run frontend and can go on browser with localhost:3000 port.</ReactMarkdown>
+            <ReactMarkdown>```
+                cd .\frontend\marketapp\```</ReactMarkdown><ReactMarkdown>```
+                npm run dev
+                ```
+            </ReactMarkdown>
             <ReactMarkdown>## Conclusion</ReactMarkdown>
             <ReactMarkdown>In this project, we propose a comprehensive framework for stock market trend forecasting that incorporates multi-factor analysis and explainable artificial intelligence. By combining historical stock prices with Google Trends data and daily news scores, we enhance the predictive power of our models and gain deeper insights into the underlying factors driving market trends. The integration of XAI techniques further enhances the interpretability of our predictions, enabling investors and financial institutions to make well-informed decisions based on transparent and explainable forecasting models.
 

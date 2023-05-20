@@ -141,7 +141,7 @@ const YourComponent = () => {
 
   return (
     <main className="flex min-h-screen flex-col px-24 bg-white">
-      <nav navbar-main className="relative flex flex-wrap items-center justify-between w-full px-0 py-2 mt-6 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-scroll="true">
+      <nav navbar-main className="relative flex flex-wrap items-center justify-between w-full px-0 py-2 mt-3 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-scroll="true">
         <div className="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
           <nav>
             <ol className="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
@@ -228,16 +228,16 @@ const YourComponent = () => {
         <div className="mr-5"></div>
       </div>
 
+          
 
-
-      {home == true ? <Home></Home>
+      {home == true ? <div className="mb-2 w-full"><Home></Home></div>
         : loading == true ? <div className="flex flex-col items-center justify-center">
           <ReactLoading type={'cylon'} color="black" />
-          <div className="text-black">Please wait. Calculating ShadowDecTree for each individual decision tree. It may take some time.</div>
+          <div className="text-black">{"Please wait. Model is being prepared for " + inputValue +  ". It may take some time."}</div>
         </div>
           : <iframe height={'2850px'} src="http://127.0.0.1:8050/"></iframe>}
 
-
+    
 
     </main>
   );
