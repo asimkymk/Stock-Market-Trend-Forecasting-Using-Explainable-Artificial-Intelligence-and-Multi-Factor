@@ -1,7 +1,9 @@
 'use client'
-import React, { useState,useEffect,useRef } from "react";
-import ReactMarkdown from 'react-markdown'
+import React, { useState, useEffect, useRef } from "react";
 import Home from "./home";
+import axios from 'axios';
+import ReactLoading from 'react-loading';
+
 
 const longNames = {
   "AAL": "American Airlines",
@@ -78,8 +80,13 @@ const longNames = {
 const YourComponent = () => {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const iframeRef = useRef(null);
-const handleInputChange = (e) => {
+  const [home, setHome] = useState(true);
+  const [data, setData] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const getValueKey = (obj, value) => {
+    return Object.keys(obj).find(key => obj[key] === value);
+  }
+  const handleInputChange = (e) => {
 
     const value = e.target.value;
     setInputValue(value);
@@ -100,22 +107,36 @@ const handleInputChange = (e) => {
 
   };
 
-  const handleSuggestionClick = (name) => {
+  const handleSuggestionClick = async (name) => {
     setInputValue(name);
     setSuggestions([]);
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name));
+      setHome(false);
+      setLoading(true);
+      setData(false);
+    } catch (error) {
+      console.error(error);
+      setHome(false);
+      setLoading(true);
+      setData(false);
+    }
   };
+
   useEffect(() => {
-    // iframe'in yüksekliğini ayarla
-    const resizeIframe = () => {
-      if (iframeRef.current) {
-        iframeRef.current.style.height = `${window.innerHeight}px`;
+    const interval = setInterval(async () => {
+      try {
+        await axios.get('http://127.0.0.1:8050/');
+        setHome(false);
+        setLoading(false);
+        setData(true);
+      } catch (error) {
+        console.log(3)
       }
-    };
-    resizeIframe();
-    window.addEventListener("resize", resizeIframe);
-    return () => {
-      window.removeEventListener("resize", resizeIframe);
-    };
+    }, 1000);
+
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -148,7 +169,23 @@ const handleInputChange = (e) => {
               </li>
               <li className="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2  before:content-['/'] text-white before:text-white" aria-current="page">Ticker Analyze</li>
             </ol>
-            <h6 className="mb-0 font-bold text-white capitalize">Stock Market Trend Forecasting Using Explainable Artificial Intelligence and Multi-Factor</h6>
+            <a className="mb-0 font-bold text-white capitalize cursor-pointer" onClick={async () => {
+              try {
+                await axios.get('http://127.0.0.1:5000/shutdown')
+                setHome(true);
+                setData(false);
+                setLoading(false);
+                setInputValue('');
+                setSuggestions([])
+              }catch{
+                setHome(true);
+                setData(false);
+                setLoading(false);
+                setInputValue('');
+                setSuggestions([])
+              }
+              
+            }}>Stock Market Trend Forecasting Using Explainable Artificial Intelligence and Multi-Factor</a>
           </nav>
 
           <div className="flex items-center">
@@ -173,10 +210,10 @@ const handleInputChange = (e) => {
             </div>
           </div>
         </div>
-       
+
       </nav>
       <div className="overflow-y-auto transition-all bg-gray-950/80 ease-soft-in rounded-2xl"
-        style={{ maxHeight: '10rem',position:'absolute',right:100,top:90,zIndex:1, minWidth:275 }}>
+        style={{ maxHeight: '10rem', position: 'absolute', right: 100, top: 90, zIndex: 1, minWidth: 275 }}>
         {suggestions.map(([key, name]) => (
           <button
             key={key}
@@ -190,9 +227,18 @@ const handleInputChange = (e) => {
         ))}
         <div className="mr-5"></div>
       </div>
-      <Home></Home>
-      
-      
+
+
+
+      {home == true ? <Home></Home>
+        : loading == true ? <div className="flex flex-col items-center justify-center">
+          <ReactLoading type={'cylon'} color="black" />
+          <div className="text-black">Please wait. Calculating ShadowDecTree for each individual decision tree. It may take some time.</div>
+        </div>
+          : <iframe height={'2850px'} src="http://127.0.0.1:8050/"></iframe>}
+
+
+
     </main>
   );
 };
