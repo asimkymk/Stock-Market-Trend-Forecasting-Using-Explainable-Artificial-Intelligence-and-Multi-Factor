@@ -29,13 +29,37 @@ Our experiments reveal that different models perform differently based on the da
 
 ## Installation
 
-```bash
-pip install -r requirements.txt
-```
+- For Python modules
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+- For frontend Nextjs UI
+
+    ```bash
+    cd .\frontend\marketapp\
+    npm i
+    ```
+
 
 ## Usage
 
-Will be added.
+> **Warning**
+> Be sure that your localhost 8050, 3000 and 5000 ports are empty and available.
+
+- First, home directory of project run backend
+
+    ```bash
+    flask run
+    ```
+
+- Then you can run frontend and can go on browser with localhost:3000 port.
+
+    ```bash
+    cd .\frontend\marketapp\
+    npm run dev
+    ```
 
 ## Conclusion
 
