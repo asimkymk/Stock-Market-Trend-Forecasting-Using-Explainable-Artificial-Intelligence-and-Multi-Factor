@@ -53,6 +53,7 @@ Our experiments reveal that different models perform differently based on the da
     ```bash
     flask run
     ```
+    > Some Python version(s) might occur standart library's ImportModule error. You can use Python with version **3.9.6** if any error of them occurs.
 
 - Then you can run frontend and can go on browser with localhost:3000 port.
 
@@ -60,6 +61,7 @@ Our experiments reveal that different models perform differently based on the da
     cd .\frontend\marketapp\
     npm run dev
     ```
+
 
 ## Conclusion
 
