@@ -3,7 +3,7 @@ import xgboost as xgb
 from sklearn.metrics import mean_squared_error
 from explainerdashboard import RegressionExplainer, ExplainerDashboard
 import dash_bootstrap_components as dbc
-
+import threading
 
 
 def openPort(symbol):
@@ -47,8 +47,9 @@ def openPort(symbol):
         explainer = RegressionExplainer(xgb_model, X_train, y_train)
 
         # Görselleştirme
-        db = ExplainerDashboard(explainer,hide_poweredby=True,header_hide_title=True,header_hide_download=False,header_hide_selector=False, bootstrap=dbc.themes.MATERIA)
-        db.run()
+        db = ExplainerDashboard(explainer,mode='dash', use_waitress=True,title=symbol,hide_poweredby=True,header_hide_download=False,header_hide_selector=False, bootstrap=dbc.themes.MATERIA)
+        
+        threading.Thread(target=db.run).start()
         return True
     except:
         return False

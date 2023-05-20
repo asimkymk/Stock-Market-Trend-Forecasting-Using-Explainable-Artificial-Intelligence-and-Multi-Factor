@@ -4,38 +4,6 @@ Created on Fri Mar 17 03:17:24 2023
 
 @author: asimk
 """
-
-
-
-
-### TODO
-### file and project's struct should be organized!
-### write news class for generic usage
-### TODO END
-
-
-#dda2e1dd09a04623a9e74e42a98d2d58
-
-
-
-"""
-googlenews = GoogleNews(start='02-01-2020',end='02-01-2020')
-googlenews.search('AAPL')
-result = googlenews.result()
-
-print(googlenews.url)
-news = []
-for item in result:
-    title = item['title']
-    text = item['desc']
-    date = item['date']
-    news.append([title, text, date])
-
-df = pd.DataFrame(news, columns=['title', 'text', 'date'])
-print(df)
-print(df.info())
-df.to_csv("news.csv")
-"""
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
