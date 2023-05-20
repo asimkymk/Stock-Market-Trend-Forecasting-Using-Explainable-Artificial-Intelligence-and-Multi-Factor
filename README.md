@@ -63,7 +63,7 @@ Our experiments reveal that different models perform differently based on the da
     npm run dev
     ```
 
-# Images
+## Images
 
 - Home Screen
 ![image info](./images/readme/home_screen.png)
