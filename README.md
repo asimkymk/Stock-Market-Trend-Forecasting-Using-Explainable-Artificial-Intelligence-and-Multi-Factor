@@ -62,6 +62,25 @@ Our experiments reveal that different models perform differently based on the da
     npm run dev
     ```
 
+# Images
+
+- Home Screen
+![image info](./images/readme/home_screen.png)
+
+- Search Screen
+![image info](./images/readme/search_screen.png)
+
+- Loading Screen
+![image info](./images/readme/loadin_screen.png)
+
+- Regression Screen
+![image info](./images/readme/regression_screen.png)
+
+- Individual Predictions Screen
+![image info](./images/readme/ind_screen.png)
+
+- What If Screen
+![image info](./images/readme/whatif_screen.png)
 
 ## Conclusion
 
