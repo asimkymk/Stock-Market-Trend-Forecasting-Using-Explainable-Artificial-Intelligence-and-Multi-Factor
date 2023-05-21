@@ -26,10 +26,11 @@ def stop_server(port):
 def shutdown():
      stop_server(8050)
 
-@app.route('/model/<string:symbol>', methods=['GET'])
-def  getfeecback(symbol):
+@app.route('/model/<string:symbol>/<string:news_model>/<string:useOpen>', methods=['GET'])
+def  getfeecback(symbol,news_model,useOpen):
+    useOpen_bool = useOpen.lower() == 'true'
     stop_server(8050)
-    p = Process(target=run_dashboard, args=(8050,symbol))
+    p = Process(target=run_dashboard, args=(8050,symbol,news_model,useOpen_bool))
     p.start()
     return True
 

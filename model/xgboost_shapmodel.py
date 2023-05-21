@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 # Veri dosyasını oku
 data = pd.read_csv('tickers.csv')
 
-data = data[(data["symbol"] == 'MSFT')]
+data = data[(data["symbol"] == 'AAL')]
 data['Date'] = pd.to_datetime(data['Date'])
 data = data.set_index('Date')
 data = data.sort_values('Date')
 # Özellikler ve hedef değişken ayırma
-X = data[['trend_score', 'news_score_model3','Open']]
+X = data[['trend_score', 'news_score_model1']]
 y = data['Adj Close']
 
 tarih = '2023-01-01'
@@ -64,12 +64,12 @@ shap.summary_plot(shap_values, X,plot_type="bar")
 shap.plots._waterfall.waterfall_legacy(expected_value, shap_values[79], features=X.loc[79,:], feature_names=X.columns, max_display=15, show=True)
 
 # Generate dependence plot
-shap.dependence_plot("Open", shap_values, X)
+#shap.dependence_plot("Open", shap_values, X)
 
 # Generate multiple dependence plots
 for name in X_train.columns:
      shap.dependence_plot(name, shap_values, X)
-shap.dependence_plot("Open", shap_values, X)
+#shap.dependence_plot("Open", shap_values, X)
 
 # Generate force plot - Multiple rows 
 shap.force_plot(explainer.expected_value, shap_values[:100,:], X.iloc[:100,:])

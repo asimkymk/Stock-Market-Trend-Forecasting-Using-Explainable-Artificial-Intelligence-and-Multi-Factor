@@ -16,7 +16,7 @@ def openPort(symbol):
         data = data.sort_values('Date')
 
         # Özellikler ve hedef değişken ayırma
-        X = data[['trend_score', 'news_score_model3','Open']]
+        X = data[['trend_score', 'news_score_model1']]
         y = data['Adj Close']
 
         tarih = '2023-02-01'

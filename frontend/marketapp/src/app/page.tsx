@@ -83,6 +83,12 @@ const YourComponent = () => {
   const [home, setHome] = useState(true);
   const [data, setData] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [addOpenValue, setAddOpenValue] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('news_score_model1');
+
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
   const getValueKey = (obj, value) => {
     return Object.keys(obj).find(key => obj[key] === value);
   }
@@ -106,15 +112,27 @@ const YourComponent = () => {
 
 
   };
+  const handleCheckboxChange = (e) => {
+    setAddOpenValue(e.target.checked);
+  };
 
   const handleSuggestionClick = async (name) => {
     setInputValue(name);
     setSuggestions([]);
     try {
-      const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name));
-      setHome(false);
-      setLoading(true);
-      setData(false);
+      if (addOpenValue == true) {
+        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption +'/true');
+        setHome(false);
+        setLoading(true);
+        setData(false);
+      }
+      else {
+        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/false');
+        setHome(false);
+        setLoading(true);
+        setData(false);
+      }
+
     } catch (error) {
       console.error(error);
       setHome(false);
@@ -177,14 +195,14 @@ const YourComponent = () => {
                 setLoading(false);
                 setInputValue('');
                 setSuggestions([])
-              }catch{
+              } catch {
                 setHome(true);
                 setData(false);
                 setLoading(false);
                 setInputValue('');
                 setSuggestions([])
               }
-              
+
             }}>Stock Market Trend Forecasting Using Explainable Artificial Intelligence and Multi-Factor</a>
           </nav>
 
@@ -198,8 +216,40 @@ const YourComponent = () => {
             </a>
           </div>
 
+          <div className="flex items-center mt-2 grow sm:mt-0 lg:flex lg:basis-auto" id="navbar">
+
+          </div>
+
+
           <div className="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto" id="navbar">
             <div className="flex items-center md:ml-auto md:pr-4">
+              <div className="flex items-center md:ml-auto md:pr-4">
+                <div className="flex items-center">
+                  <label htmlFor="newsScoreOption" className="mr-2">
+                    Select News Score Model:
+                  </label>
+                  <select
+                    id="newsScoreOption"
+                    value={selectedOption}
+                    onChange={handleOptionChange}
+                    className="border border-gray-300 rounded px-2 py-1 text-black"
+                  >
+                    <option value="news_score_model1">News Score Model 1</option>
+                    <option value="news_score_model2">News Score Model 2</option>
+                    <option value="news_score_model3">News Score Model 3</option>
+                  </select>
+                  <label htmlFor="addOpenValue" className="inline-flex items-center ml-4">
+                    <input
+                      type="checkbox"
+                      id="addOpenValue"
+                      checked={addOpenValue}
+                      onChange={handleCheckboxChange}
+                      className="form-checkbox"
+                    />
+                    <span className="ml-2">Add Open value as an input to model</span>
+                  </label>
+                </div>
+              </div>
               <div className="">
 
                 <input type="text" className="pl-9 text-sm focus:shadow-soft-primary-outline bg-gray-950 placeholder:text-white/80 text-white/80 ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-white bg-clip-padding py-2 pr-3 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow" placeholder="Type ticker here..."
@@ -228,16 +278,16 @@ const YourComponent = () => {
         <div className="mr-5"></div>
       </div>
 
-          
+
 
       {home == true ? <div className="mb-2 w-full"><Home></Home></div>
         : loading == true ? <div className="flex flex-col items-center justify-center">
           <ReactLoading type={'cylon'} color="black" />
-          <div className="text-black">{"Please wait. Model is being prepared for " + inputValue +  ". It may take some time."}</div>
+          <div className="text-black">{"Please wait. Model is being prepared for " + inputValue + ". It may take some time."}</div>
         </div>
           : <iframe height={'2850px'} src="http://127.0.0.1:8050/"></iframe>}
 
-    
+
 
     </main>
   );

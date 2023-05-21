@@ -9,13 +9,13 @@ from lime import lime_tabular
 # Veri dosyasını oku
 data = pd.read_csv('tickers.csv')
 
-data = data[(data["symbol"] == 'MSFT')]
+data = data[(data["symbol"] == 'AAL')]
 data['Date'] = pd.to_datetime(data['Date'])
 data = data.set_index('Date')
 data = data.sort_values('Date')
 
 # Özellikler ve hedef değişken ayırma
-X = data[['trend_score', 'news_score_model3']]
+X = data[['trend_score', 'news_score_model1']]
 y = data['Adj Close']
 
 tarih = '2023-01-01'
@@ -54,5 +54,5 @@ print(exp.as_list())
 plt.bar([x[0] for x in exp.as_list()], [x[1] for x in exp.as_list()])
 plt.xlabel('Features')
 plt.ylabel('Contribution')
-plt.savefig('lime_explanation.png')
+plt.savefig('./images/figures/lime_explanation.svg')
 plt.show()
