@@ -3,7 +3,18 @@ import React, { useState, useEffect, useRef } from "react";
 import Home from "./home";
 import axios from 'axios';
 import ReactLoading from 'react-loading';
+const options = [
+  "XGBoost",
+  "Random_Forest",
+  "Gradient_Boosting",
+  "Linear_Regression",
+  "Support_Vector_Regression",
+  "Decision_Tree",
+  "KNN_Neighbors",
+  "ElasticNet",
+  "Ridge_Regression"
 
+];
 
 const longNames = {
   "AAL": "American Airlines",
@@ -85,7 +96,11 @@ const YourComponent = () => {
   const [loading, setLoading] = useState(false);
   const [addOpenValue, setAddOpenValue] = useState(false);
   const [selectedOption, setSelectedOption] = useState('news_score_model1');
+  const [selectedModel, setSelectedModel] = useState('XGBoost');
 
+  const handleChange = (event) => {
+    setSelectedModel(event.target.value);
+  };
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
@@ -121,13 +136,13 @@ const YourComponent = () => {
     setSuggestions([]);
     try {
       if (addOpenValue == true) {
-        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption +'/true');
+        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/true/' + selectedModel);
         setHome(false);
         setLoading(true);
         setData(false);
       }
       else {
-        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/false');
+        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/false/' + selectedModel);
         setHome(false);
         setLoading(true);
         setData(false);
@@ -158,9 +173,9 @@ const YourComponent = () => {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col px-24 bg-white">
+    <main className="flex min-h-screen flex-col px-12 bg-white">
       <nav navbar-main className="relative flex flex-wrap items-center justify-between w-full px-0 py-2 mt-3 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-scroll="true">
-        <div className="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+        <div className="flex items-center justify-center w-full px-4 py-1 mx-auto flex-wrap-inherit">
           <nav>
             <ol className="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
               <li className="leading-normal text-sm breadcrumb-item">
@@ -224,35 +239,61 @@ const YourComponent = () => {
           <div className="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto" id="navbar">
             <div className="flex items-center md:ml-auto md:pr-4">
               <div className="flex items-center md:ml-auto md:pr-4">
-                <div className="flex items-center">
-                  <label htmlFor="newsScoreOption" className="mr-2">
-                    Select News Score Model:
+                <div className="mt-1">
+                  <label htmlFor="selectOption" className="block text-sm font-medium text-white">
+                    Select Model:
                   </label>
                   <select
-                    id="newsScoreOption"
-                    value={selectedOption}
-                    onChange={handleOptionChange}
-                    className="border border-gray-300 rounded px-2 py-1 text-black"
+                    id="selectOption"
+                    name="selectOption"
+                    value={selectedModel}
+                    onChange={handleChange}
+                    className="border border-gray-300 rounded px-2 py-1 text-black relative w-full "
                   >
-                    <option value="news_score_model1">News Score Model 1</option>
-                    <option value="news_score_model2">News Score Model 2</option>
-                    <option value="news_score_model3">News Score Model 3</option>
+                    {options.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
                   </select>
-                  <label htmlFor="addOpenValue" className="inline-flex items-center ml-4">
-                    <input
-                      type="checkbox"
-                      id="addOpenValue"
-                      checked={addOpenValue}
-                      onChange={handleCheckboxChange}
-                      className="form-checkbox"
-                    />
-                    <span className="ml-2">Add Open value as an input to model</span>
-                  </label>
                 </div>
+                <div className="flex items-center ">
+
+                </div>
+                <div className="flex-col ml-2">
+                  <div className="">
+                    <label htmlFor="newsScoreOption" className="mr-2">
+                      Select News Score Model:
+                    </label>
+                  </div>
+                  <div>
+                    <select
+                      id="newsScoreOption"
+                      value={selectedOption}
+                      onChange={handleOptionChange}
+                      className="border border-gray-300 rounded px-2 py-1 text-black relative w-full "
+                    >
+                      <option value="news_score_model1">Model 1</option>
+                      <option value="news_score_model2">Model 2</option>
+                      <option value="news_score_model3">Model 3</option>
+                    </select>
+                  </div>
+
+                </div>
+                <label htmlFor="addOpenValue" className="inline-flex items-center ml-2 mt-3">
+                  <input
+                    type="checkbox"
+                    id="addOpenValue"
+                    checked={addOpenValue}
+                    onChange={handleCheckboxChange}
+                    className="form-checkbox"
+                  />
+                  <span className="ml-1">Add Open price</span>
+                </label>
               </div>
               <div className="">
 
-                <input type="text" className="pl-9 text-sm focus:shadow-soft-primary-outline bg-gray-950 placeholder:text-white/80 text-white/80 ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-white bg-clip-padding py-2 pr-3 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow" placeholder="Type ticker here..."
+                <input type="text" className="pl-5 text-sm focus:shadow-soft-primary-outline bg-gray-950 placeholder:text-white/80 text-white/80 ease-soft w-1/100 leading-5.6 relative  block min-w-0 flex-auto rounded-lg border border-solid border-white bg-clip-padding py-2 pr-2 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow mt-2" placeholder="Type ticker name here..."
                   value={inputValue}
                   onChange={handleInputChange}
                 />
@@ -280,7 +321,7 @@ const YourComponent = () => {
 
 
 
-      {home == true ? <div className="mb-2 w-full"><Home></Home></div>
+      {home == true ? <div className="mb-1 w-full"><Home></Home></div>
         : loading == true ? <div className="flex flex-col items-center justify-center">
           <ReactLoading type={'cylon'} color="black" />
           <div className="text-black">{"Please wait. Model is being prepared for " + inputValue + ". It may take some time."}</div>
