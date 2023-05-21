@@ -260,7 +260,7 @@ const YourComponent = () => {
                 <div className="flex items-center ">
 
                 </div>
-                <div className="flex-col ml-2">
+                <div className="flex-col ml-5 mr-5">
                   <div className="">
                     <label htmlFor="newsScoreOption" className="mr-2">
                       Select News Score Model:
@@ -291,9 +291,9 @@ const YourComponent = () => {
                   <span className="ml-1">Add Open price</span>
                 </label>
               </div>
-              <div className="">
-
-                <input type="text" className="pl-5 text-sm focus:shadow-soft-primary-outline bg-gray-950 placeholder:text-white/80 text-white/80 ease-soft w-1/100 leading-5.6 relative  block min-w-0 flex-auto rounded-lg border border-solid border-white bg-clip-padding py-2 pr-2 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow mt-2" placeholder="Type ticker name here..."
+              <div className="mt-3">
+              <input type="text" id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type ticker name here..."
+                
                   value={inputValue}
                   onChange={handleInputChange}
                 />
@@ -303,8 +303,8 @@ const YourComponent = () => {
         </div>
 
       </nav>
-      <div className="overflow-y-auto transition-all bg-gray-950/80 ease-soft-in rounded-2xl"
-        style={{ maxHeight: '10rem', position: 'absolute', right: 100, top: 90, zIndex: 1, minWidth: 275 }}>
+      <div className="overflow-y-scroll no-scrollbar transition-all bg-gray-950/80 ease-soft-in rounded-2xl"
+        style={{ maxHeight: '12rem', position: 'absolute', right: 50, top: 85, zIndex: 1, width: 250, }}>
         {suggestions.map(([key, name]) => (
           <button
             key={key}
