@@ -248,7 +248,7 @@ const YourComponent = () => {
                     name="selectOption"
                     value={selectedModel}
                     onChange={handleChange}
-                    className="border border-gray-300 rounded px-2 py-1 text-black relative w-full "
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
                   >
                     {options.map((option) => (
                       <option key={option} value={option}>
@@ -271,7 +271,7 @@ const YourComponent = () => {
                       id="newsScoreOption"
                       value={selectedOption}
                       onChange={handleOptionChange}
-                      className="border border-gray-300 rounded px-2 py-1 text-black relative w-full "
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500  text-black  w-full "
                     >
                       <option value="news_score_model1">Model 1</option>
                       <option value="news_score_model2">Model 2</option>

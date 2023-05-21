@@ -28,9 +28,17 @@ def shutdown():
 
 @app.route('/model/<string:symbol>/<string:news_model>/<string:useOpen>/<string:modelName>', methods=['GET'])
 def  getfeecback(symbol,news_model,useOpen,modelName):
-    useOpen_bool = useOpen.lower() == 'true'
-    stop_server(8050)
-    p = Process(target=run_dashboard, args=(8050,symbol,news_model,useOpen_bool,modelName))
-    p.start()
-    return True
+    try:
+
+        useOpen_bool = useOpen.lower() == 'true'
+        stop_server(8050)
+        p = Process(target=run_dashboard, args=(8050,symbol,news_model,useOpen_bool,modelName))
+        p.start()
+        message = {
+                "message":"Success",
+                "data":"Model started."
+                }
+        return jsonify(message), 200
+    except:
+        return jsonify({"message":"Error",'data': 'API Service error occured!'}), 400
 
