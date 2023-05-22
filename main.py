@@ -258,3 +258,33 @@ def create_daily_news_score(start_index):
     print("CSV Kaydedildi...")
     df.to_csv('tickers.csv', index=False)
 
+
+def find_open_and_close_difference(start_index):
+    df = pd.read_csv("tickers.csv")
+    for index in range(start_index, len(df)):
+        try:
+            row = df.iloc[index]
+            symbol = row["symbol"]
+            date = row["Date"]
+            openValue = row['Open']
+            adjCloseValue = row['Adj Close']
+            difference = (adjCloseValue - openValue) / openValue * 100
+            if abs(difference) <= 1:
+                df.at[index,"difference_value"] = int(0)
+            elif adjCloseValue > openValue:
+                df.at[index,"difference_value"] = int(1)
+            else:
+                df.at[index,"difference_value"] = int(-1)
+            if index % 100 == 0:
+                print("CSV Güncelleniyor...")
+                df.to_csv('tickers.csv', index=False)
+            print(str(index) + ' / ' + symbol + ' / ' + date + ' / ' + str(openValue) + ' / ' + str(adjCloseValue) + ' / ' + str(difference) )
+        except Exception as e:
+            print(e)
+            print(str(index) + ' / ' + symbol + ' / ' + date + ' / ' + str(openValue) + ' / ' + str(adjCloseValue) + ' / ' + str(difference))
+            break
+    print("CSV Kaydedildi...")
+    df.to_csv('tickers.csv', index=False)
+
+
+find_open_and_close_difference(0)
