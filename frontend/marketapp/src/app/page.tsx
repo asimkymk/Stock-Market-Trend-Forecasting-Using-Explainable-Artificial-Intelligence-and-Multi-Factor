@@ -303,7 +303,7 @@ const YourComponent = () => {
         </div>
 
       </nav>
-      <div className="overflow-y-scroll transition-all bg-gray-950/70 rounded-xl"
+      <div className="overflow-y-scroll no-scrollbar transition-all bg-gray-950/70 rounded-xl"
         style={{ maxHeight: '11rem', position: 'absolute', right: 50, top: 85, zIndex: 1, width: 250, }}>
         {suggestions.map(([key, name]) => (
           <button
