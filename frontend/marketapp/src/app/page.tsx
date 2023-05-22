@@ -303,12 +303,14 @@ const YourComponent = () => {
         </div>
 
       </nav>
-      <div className="overflow-y-scroll no-scrollbar transition-all bg-gray-950/80 ease-soft-in rounded-2xl"
+      <div className="overflow-y-scroll no-scrollbar transition-all bg-gray-950/70 rounded-xl"
         style={{ maxHeight: '12rem', position: 'absolute', right: 50, top: 85, zIndex: 1, width: 250, }}>
         {suggestions.map(([key, name]) => (
           <button
             key={key}
-            className="text-white block mt-1 mb-2 ml-2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            data-te-ripple-init
+            data-te-ripple-color="light"
+            className="text-white block mt-1 mb-2 ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 text-center mr-2 mb-2"
 
             onClick={() => handleSuggestionClick(name)}
           >
