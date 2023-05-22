@@ -66,22 +66,22 @@ Our experiments reveal that different models perform differently based on the da
 ## Images
 
 - Home Screen
-![image info](./images/readme/home_screen.png)
+![image info](./images/readme/home_screen.jpg)
 
 - Search Screen
-![image info](./images/readme/search_screen.png)
+![image info](./images/readme/search_screen.jpg)
 
 - Loading Screen
-![image info](./images/readme/loadin_screen.png)
+![image info](./images/readme/loadin_screen.jpg)
 
 - Regression Screen
-![image info](./images/readme/regression_screen.png)
+![image info](./images/readme/regression_screen.jpg)
 
 - Individual Predictions Screen
-![image info](./images/readme/ind_screen.png)
+![image info](./images/readme/ind_screen.jpg)
 
 - What If Screen
-![image info](./images/readme/whatif_screen.png)
+![image info](./images/readme/whatif_screen.jpg)
 
 ## Conclusion
 
