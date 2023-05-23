@@ -8,89 +8,81 @@ from multiprocessing import Process
 from waitress import serve
 import os
 import signal
-from sklearn.svm import SVR
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from sklearn.linear_model import LinearRegression, Ridge, ElasticNet
+from sklearn.preprocessing import MinMaxScaler
 
+from models import *
 
-def random_forest_model(X_train,y_train):
-    rf_model = RandomForestRegressor(n_estimators=100, random_state=0)
-    rf_model.fit(X_train, y_train)
-    return rf_model
+def run_dashboard(port,symbol,news_model,useTrend,modelName,delay):
+    df = pd.read_csv('tickers.csv')  # ajd_close verinizi içeren dosya
 
-def gradient_boost_model(X_train,y_train):
-    gb_model = GradientBoostingRegressor(
-    n_estimators=100, learning_rate=0.1, max_depth=1, random_state=0
-    )
-    gb_model.fit(X_train, y_train)
-    return gb_model
+    # Veriyi doğru formatta hazırlama
+    df['Date'] = pd.to_datetime(df['Date'])  # Eğer 'date' adında bir sütununuz varsa
 
-def linear_regression_model(X_train,y_train):
-    lr_model = LinearRegression()
-    lr_model.fit(X_train, y_train)
-    return lr_model
+    df = df.sort_values('Date')
+    df = df.set_index('Date')
+    df = df[(df["symbol"] == symbol)]
+    tarih = '2023-01-01'
 
-def svr_model(X_train,y_train):
-    svr_model = SVR(kernel="linear")
-    svr_model.fit(X_train, y_train)
-    return svr_model
+    # Lag özellikleri oluşturma
+    volume_data = df[['Volume']]
 
-def decision_tree_model(X_train,y_train):
-    dt_model = DecisionTreeRegressor(random_state=0)
-    dt_model.fit(X_train, y_train)
-    return dt_model
+    # Veriyi ölçeklendir
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    df['Volume']= scaler.fit_transform(volume_data)
+    df['Open']= scaler.fit_transform(df[['Open']])
+    df['High']= scaler.fit_transform(df[['High']])
+    df['Low']= scaler.fit_transform(df[['Low']])
+    df['trend_score']= scaler.fit_transform(df[['trend_score']])
+    df['news_score_model1']= scaler.fit_transform(df[['news_score_model1']])
+    df['news_score_model2']= scaler.fit_transform(df[['news_score_model2']])
+    df['news_score_model3']= scaler.fit_transform(df[['news_score_model3']])
+    
+    for i in range(1, delay):
+        df[f'adj_close_lag_{i}'] = df['Adj Close'].shift(i)
+        df[f'open_lag_{i}'] = df['Open'].shift(i)
+        df[f'high_lag_{i}'] = df['High'].shift(i)
+        df[f'low_lag_{i}'] = df['Low'].shift(i)
+        df[f'volume_lag_{i}'] = df['Volume'].shift(i)
+        
+        
 
-def knn_model(X_train,y_train):
-    knn_model = KNeighborsRegressor(n_neighbors=5)
-    knn_model.fit(X_train, y_train)
-    return knn_model
+    # NaN değerleri temizleme
+    df = df.dropna()
+    
+    parameters=["Open","High","Low","Adj Close","Volume"]
+    features = [f'adj_close_lag_{i}' for i in range(1, delay)]  + [f'open_lag_{i}' for i in range(1, delay)] + [f'high_lag_{i}' for i in range(1, delay)] + [f'low_lag_{i}' for i in range(1, delay)] + [f'volume_lag_{i}' for i in range(1, delay)]
+    if useTrend:
+        df[f'trend_score_lag_{i}'] = df['trend_score'].shift(i)
+        parameters.append("trend_score")
+        features += [f'trend_score_lag_{i}' for i in range(1, delay)] 
+    if not news_model=="none":
+        if news_model == "news_score_model1":
+            df[f'news_score_model1_lag_{i}'] = df['news_score_model1'].shift(i)
+            parameters.append("news_score_model1")
+            features += [f'news_score_model1_lag_{i}' for i in range(1, delay)]
+        elif news_model == "news_score_model2":
+            df[f'news_score_model2_lag_{i}'] = df['news_score_model2'].shift(i)
+            parameters.append("news_score_model2")
+            features += [f'news_score_model2_lag_{i}' for i in range(1, delay)]
+        else:
+            df[f'news_score_model3_lag_{i}'] = df['news_score_model3'].shift(i)
+            parameters.append("news_score_model3")
+            features += [f'news_score_model3_lag_{i}' for i in range(1, delay)]
+            
 
-def xgboost_model(X_train,y_train):
-    xgb_model = xgb.XGBRegressor(
-    objective="reg:squarederror",
-    colsample_bytree=0.3,
-    learning_rate=0.1,
-    max_depth=10,
-    alpha=10,
-    n_estimators=100,
-    )
-    xgb_model.fit(X_train, y_train)
-    return xgb_model
+    # Özellikler ve hedef değeri belirleme
+    
+    target = 'Adj Close'
 
-def elastic_net_model(X_train,y_train):
-    elasticnet_model = ElasticNet(alpha=1, l1_ratio=0.5)
-    elasticnet_model.fit(X_train, y_train)
-    return elasticnet_model
+    # Eğitim ve test seti oluşturma
+    train_df = df[df.index < tarih]
+    test_df = df[df.index >= tarih]
 
-def ridge_regression_model(X_train,y_train):
-    ridge_model = Ridge(alpha= 10)
-    ridge_model.fit(X_train, y_train)
-    return ridge_model
+    X_train = train_df[features]
+    y_train = train_df[target]
 
-def run_dashboard(port,symbol,news_model,useOpen,modelName):
-    data = pd.read_csv('tickers.csv')
-
-    data = data[(data["symbol"] == symbol)]
-    data['Date'] = pd.to_datetime(data['Date'])
-    data = data.set_index('Date')
-    data = data.sort_values('Date')
-
-    if useOpen:
-
-        X = data[['trend_score', news_model,"Open"]]
-    else:
-        X = data[['trend_score', news_model]]
-    y = data['Adj Close']
-
-    tarih = '2023-02-01'
-
-    X_train = X[X.index < tarih]
-    y_train = y[y.index < tarih]
-
-    X_test = X[X.index >= tarih]
-    y_test = y[y.index >= tarih]
+    X_test = test_df[features]
+    y_test = test_df[target]
 
     models = {
     "Random_Forest": random_forest_model,

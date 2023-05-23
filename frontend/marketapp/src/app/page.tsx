@@ -136,13 +136,13 @@ const YourComponent = () => {
     setSuggestions([]);
     try {
       if (addOpenValue == true) {
-        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/true/' + selectedModel);
+        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/true/' + selectedModel+'/2');
         setHome(false);
         setLoading(true);
         setData(false);
       }
       else {
-        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/false/' + selectedModel);
+        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/false/' + selectedModel +'/2');
         setHome(false);
         setLoading(true);
         setData(false);
@@ -273,6 +273,7 @@ const YourComponent = () => {
                       onChange={handleOptionChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500  text-black  w-full "
                     >
+                      <option value="none">None</option>
                       <option value="news_score_model1">Model 1</option>
                       <option value="news_score_model2">Model 2</option>
                       <option value="news_score_model3">Model 3</option>
@@ -280,6 +281,7 @@ const YourComponent = () => {
                   </div>
 
                 </div>
+                
                 <label htmlFor="addOpenValue" className="inline-flex items-center ml-2 mt-3">
                   <input
                     type="checkbox"
@@ -288,7 +290,7 @@ const YourComponent = () => {
                     onChange={handleCheckboxChange}
                     className="form-checkbox"
                   />
-                  <span className="ml-1">Add Open price</span>
+                  <span className="ml-1">Use Trend Score parameter</span>
                 </label>
               </div>
               <div className="mt-3">
