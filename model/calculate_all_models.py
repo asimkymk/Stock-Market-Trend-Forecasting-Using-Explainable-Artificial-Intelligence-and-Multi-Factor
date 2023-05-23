@@ -33,6 +33,7 @@ def calculate_all_models(symbol,tarih = '2023-01-01',useTrend=False,news_model=F
     df['news_score_model1']= scaler.fit_transform(df[['news_score_model1']])
     df['news_score_model2']= scaler.fit_transform(df[['news_score_model2']])
     df['news_score_model3']= scaler.fit_transform(df[['news_score_model3']])
+
     
     for i in range(1, delay):
         df[f'adj_close_lag_{i}'] = df['Adj Close'].shift(i)
@@ -40,6 +41,10 @@ def calculate_all_models(symbol,tarih = '2023-01-01',useTrend=False,news_model=F
         df[f'high_lag_{i}'] = df['High'].shift(i)
         df[f'low_lag_{i}'] = df['Low'].shift(i)
         df[f'volume_lag_{i}'] = df['Volume'].shift(i)
+        df[f'news_score_model1_lag_{i}'] = df['news_score_model1'].shift(i)
+        df[f'news_score_model2_lag_{i}'] = df['news_score_model2'].shift(i)
+        df[f'news_score_model3_lag_{i}'] = df['news_score_model3'].shift(i)
+        df[f'trend_score_lag_{i}'] = df['trend_score'].shift(i)
         
         
 
@@ -48,20 +53,16 @@ def calculate_all_models(symbol,tarih = '2023-01-01',useTrend=False,news_model=F
     parameters=["Open","High","Low","Adj Close","Volume"]
     features = [f'adj_close_lag_{i}' for i in range(1, delay)]  + [f'open_lag_{i}' for i in range(1, delay)] + [f'high_lag_{i}' for i in range(1, delay)] + [f'low_lag_{i}' for i in range(1, delay)] + [f'volume_lag_{i}' for i in range(1, delay)]
     if useTrend:
-        df[f'trend_score_lag_{i}'] = df['trend_score'].shift(i)
         parameters.append("trend_score")
         features += [f'trend_score_lag_{i}' for i in range(1, delay)] 
     if not news_model==False:
         if news_model == "news_score_model1":
-            df[f'news_score_model1_lag_{i}'] = df['news_score_model1'].shift(i)
             parameters.append("news_score_model1")
             features += [f'news_score_model1_lag_{i}' for i in range(1, delay)]
         elif news_model == "news_score_model2":
-            df[f'news_score_model2_lag_{i}'] = df['news_score_model2'].shift(i)
             parameters.append("news_score_model2")
             features += [f'news_score_model2_lag_{i}' for i in range(1, delay)]
         else:
-            df[f'news_score_model3_lag_{i}'] = df['news_score_model3'].shift(i)
             parameters.append("news_score_model3")
             features += [f'news_score_model3_lag_{i}' for i in range(1, delay)]
     target = 'Adj Close'
@@ -105,10 +106,10 @@ def calculate_all_models(symbol,tarih = '2023-01-01',useTrend=False,news_model=F
     elasticnet_forecast = elastic_net_model(X_train,y_train).predict(X_test)
 
     #lstm
-    [lstm_forecast,y_test_lstm,y_test_1,time_steps] = lstm_model(parameters=parameters,time_steps=delay-1,symbol= 'AAL', tarih=tarih)
+    [lstm_forecast,y_test_lstm,y_test_1,time_steps] = lstm_model(parameters=parameters,time_steps=delay-1,symbol= symbol, tarih=tarih)
 
     #RNN
-    [rnn_forecast, y_test_rnn, y_test_2, time_steps2] = rnn_model(parameters=parameters,time_steps=delay-1,symbol= 'AAL', tarih=tarih)
+    [rnn_forecast, y_test_rnn, y_test_2, time_steps2] = rnn_model(parameters=parameters,time_steps=delay-1,symbol= symbol, tarih=tarih)
 
     # Tahminlerin performansını değerlendirme
     models = {
@@ -127,7 +128,7 @@ def calculate_all_models(symbol,tarih = '2023-01-01',useTrend=False,news_model=F
     plt.style.use('seaborn-whitegrid')
     plt.figure(figsize=(15, 8))
 
-
+    total = 0
     for model_name, forecast in models.items():
         mse = 0
         if model_name=='LSTM':
@@ -136,7 +137,9 @@ def calculate_all_models(symbol,tarih = '2023-01-01',useTrend=False,news_model=F
             mse = mean_squared_error(y_test_rnn, forecast)
         else:
             mse = mean_squared_error(y_test, forecast)
+        total = total + mse 
         print(f"{mse:.2f}\n")
+    print("Average: ",total/len(models))
 
     # Tahminleri grafikle gösterme
     for model_name, forecast in models.items():
@@ -147,7 +150,8 @@ def calculate_all_models(symbol,tarih = '2023-01-01',useTrend=False,news_model=F
         else:
             plt.plot(y_test.index, forecast, label=model_name)
 
-    plt.plot(y_test.index, y_test, label='Gerçek Değerler', color='black', linewidth=2)
+    real_df = df[df.index >= '2022-12-10']
+    plt.plot(real_df.index, real_df['Adj Close'], label='Gerçek Değerler', color='black', linewidth=2)
     plt.xlabel('Date')
     plt.ylabel('Adj Close')
     plt.title('Tahminler ve Gerçek Değerler')
