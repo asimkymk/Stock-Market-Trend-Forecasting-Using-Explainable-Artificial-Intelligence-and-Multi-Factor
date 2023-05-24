@@ -49,7 +49,7 @@ ets_forecast = ets_fit.forecast(steps=len(y_test))
 
 
 # Regression modelleri için veri özellikleri
-X = data[["trend_score", "news_score_model3"]]
+X = data[["trend_score","news_score_model1"]]
 X_train = X[X.index < tarih]
 X_test = X[X.index >= tarih]
 
@@ -68,23 +68,56 @@ X_test_rnn = X_test.values.reshape(X_test.shape[0], X_test.shape[1], 1)
 rnn_model.fit(X_train_rnn, y_train, epochs=50, batch_size=16)
 rnn_forecast = rnn_model.predict(X_test_rnn)
 
-# LSTM için veri önişleme
+import random
+
+# Set the random seeds
+np.random.seed(1)
+tf.random.set_seed(2)
+random.seed(100)
+
 n_steps = 5
 X_train_lstm = np.array([X_train.values[i-n_steps:i, :] for i in range(n_steps, len(X_train))])
 y_train_lstm = y_train.values[n_steps:]
 X_test_lstm = np.array([X_test.values[i-n_steps:i, :] for i in range(n_steps, len(X_test))])
 y_test_lstm = y_test.values[n_steps:]
 
+D = 1  # Çıktı boyutu
+num_nodes = [200, 200, 150]  # Her LSTM katmanındaki nöronların sayısı
+n_layers = len(num_nodes)  # LSTM katmanlarının sayısı
+dropout = 0.2  # Dropout miktarı
+
+# Modeli oluşturma
 lstm_model = Sequential()
-lstm_model.add(LSTM(50, activation='relu', input_shape=(n_steps, X_train.shape[1])))
-lstm_model.add(Dense(1))
-lstm_model.compile(optimizer='adam', loss='mse')
+
+# LSTM katmanlarını ekleme
+for i in range(n_layers):
+    return_sequences = True if i < n_layers - 1 else False
+    if i == 0:
+        # İlk katmana girdi boyutunu belirtme
+        lstm_model.add(LSTM(num_nodes[i], return_sequences=return_sequences, input_shape=(n_steps, X_train.shape[1])))
+    else:
+        lstm_model.add(LSTM(num_nodes[i], return_sequences=return_sequences))
+    
+    # Dropout katmanını ekleme
+    lstm_model.add(Dropout(dropout))
+
+# Regresyon katmanını ekleme
+lstm_model.add(Dense(D))
+
+# Modelin özeti
+lstm_model.summary()
 
 # LSTM modelini eğitme
-lstm_model.fit(X_train_lstm, y_train_lstm, epochs=10, verbose=0)
 
+lstm_model.compile(optimizer='adam', loss='mse')
+history = lstm_model.fit(X_train_lstm, y_train_lstm, epochs=10, verbose=1)
+
+# Tahminlerde bulunma
 # LSTM ile tahmin yapma
 lstm_forecast = lstm_model.predict(X_test_lstm)
+
+
+
 
 
 # Gradient Boosting modeli
@@ -115,13 +148,17 @@ knn_model.fit(X_train, y_train)
 knn_forecast = knn_model.predict(X_test)
 
 # XGB modeli
+
+""" {'alpha': 30, 'colsample_bytree': 0.1, 'learning_rate': 0.01, 'max_depth': 2, 'n_estimators': 500, 'subsample': 1}"""
+
 xgb_model = xgb.XGBRegressor(
     objective="reg:squarederror",
-    colsample_bytree=0.3,
-    learning_rate=0.1,
-    max_depth=10,
-    alpha=10,
-    n_estimators=100,
+    colsample_bytree=0.1,
+    learning_rate=0.01,
+    max_depth=2,
+    alpha=30,
+    n_estimators=500,
+    subsample=1
 )
 xgb_model.fit(X_train, y_train)
 xgb_forecast = xgb_model.predict(X_test)
@@ -164,7 +201,7 @@ for model_name, forecast in models.items():
     print(f"{model_name} modeli için Test Kümesi Ortalama Kare Hatası: {mse:.2f}")
 
 # Tahminleri grafikle gösterme
-plt.figure(figsize=(15, 8))
+
 
 for model_name, forecast in models.items():
     if model_name == 'LSTM':
@@ -177,5 +214,5 @@ plt.xlabel('Date')
 plt.ylabel('Adj Close')
 plt.title('Tahminler ve Gerçek Değerler')
 plt.legend()
-plt.savefig("./images/figures/third_score_model_all_models.svg")
+plt.savefig("./images/figures/third_score_model_all_models_just_adj_close.svg")
 plt.show()
