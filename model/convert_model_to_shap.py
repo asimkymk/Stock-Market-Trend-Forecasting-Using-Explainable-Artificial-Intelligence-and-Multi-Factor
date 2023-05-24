@@ -90,7 +90,7 @@ def plot_shap_models(symbol,tarih = '2023-02-01',useTrend=False,news_model=False
      # Tahminlerin performansını değerlendirme
 
      plt.style.use('seaborn-whitegrid')
-     plt.figure(figsize=(15, 8))
+     
 
      import shap
      X = X_train.reset_index(drop=True)
