@@ -10,7 +10,7 @@ import os
 import signal
 from sklearn.preprocessing import MinMaxScaler
 
-from models import *
+from model.models import *
 
 def run_dashboard(port,symbol,news_model,useTrend,modelName,delay):
     df = pd.read_csv('tickers.csv')  # ajd_close verinizi içeren dosya
@@ -36,6 +36,7 @@ def run_dashboard(port,symbol,news_model,useTrend,modelName,delay):
     df['news_score_model1']= scaler.fit_transform(df[['news_score_model1']])
     df['news_score_model2']= scaler.fit_transform(df[['news_score_model2']])
     df['news_score_model3']= scaler.fit_transform(df[['news_score_model3']])
+
     
     for i in range(1, delay):
         df[f'adj_close_lag_{i}'] = df['Adj Close'].shift(i)
@@ -43,6 +44,10 @@ def run_dashboard(port,symbol,news_model,useTrend,modelName,delay):
         df[f'high_lag_{i}'] = df['High'].shift(i)
         df[f'low_lag_{i}'] = df['Low'].shift(i)
         df[f'volume_lag_{i}'] = df['Volume'].shift(i)
+        df[f'news_score_model1_lag_{i}'] = df['news_score_model1'].shift(i)
+        df[f'news_score_model2_lag_{i}'] = df['news_score_model2'].shift(i)
+        df[f'news_score_model3_lag_{i}'] = df['news_score_model3'].shift(i)
+        df[f'trend_score_lag_{i}'] = df['trend_score'].shift(i)
         
         
 
