@@ -174,7 +174,7 @@ const YourComponent = () => {
 
   return (
     <main className="flex min-h-screen flex-col px-12 bg-white">
-      <nav navbar-main className="relative flex flex-wrap items-center justify-between w-full px-0 py-2 mt-3 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-scroll="true">
+      <nav navbar-main className="relative flex flex-wrap items-center justify-between w-full px-0 py-2 mt-4 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-scroll="true">
         <div className="flex items-center justify-center w-full px-4 py-1 mx-auto flex-wrap-inherit">
           <nav>
             <ol className="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">

@@ -49,11 +49,7 @@ def run_dashboard(port,symbol,news_model,useTrend,modelName,delay):
         df[f'news_score_model3_lag_{i}'] = df['news_score_model3'].shift(i)
         df[f'trend_score_lag_{i}'] = df['trend_score'].shift(i)
         
-        
 
-    # NaN değerleri temizleme
-    df = df.dropna()
-    
     parameters=["Open","High","Low","Adj Close","Volume"]
     features = [f'adj_close_lag_{i}' for i in range(1, delay)]  + [f'open_lag_{i}' for i in range(1, delay)] + [f'high_lag_{i}' for i in range(1, delay)] + [f'low_lag_{i}' for i in range(1, delay)] + [f'volume_lag_{i}' for i in range(1, delay)]
     if useTrend:
@@ -78,7 +74,8 @@ def run_dashboard(port,symbol,news_model,useTrend,modelName,delay):
     # Özellikler ve hedef değeri belirleme
     
     target = 'Adj Close'
-
+    # NaN değerleri temizleme
+    df = df.dropna()
     # Eğitim ve test seti oluşturma
     train_df = df[df.index < tarih]
     test_df = df[df.index >= tarih]
@@ -100,6 +97,7 @@ def run_dashboard(port,symbol,news_model,useTrend,modelName,delay):
     "ElasticNet":elastic_net_model,
     "Ridge_Regression":ridge_regression_model
     }
+    
 
     model = models[modelName](X_train,y_train)
 

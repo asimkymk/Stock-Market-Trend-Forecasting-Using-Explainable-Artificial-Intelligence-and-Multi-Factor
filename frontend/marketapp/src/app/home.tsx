@@ -6,7 +6,7 @@ const Home = () => {
 
 
     return (
-        <div className="relative w-full h-90 px-3 pl-5 pr-20 py-10 mt-10 pb-10 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start">
+        <div className="relative w-full h-90 px-3 pl-5 pr-20 py-10 mt-8 pb-10 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start">
             <ReactMarkdown># Stock Market Trend Forecasting Using Explainable Artificial Intelligence and Multi-Factor</ReactMarkdown>
             
            
