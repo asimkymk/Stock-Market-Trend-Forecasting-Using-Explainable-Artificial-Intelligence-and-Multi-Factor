@@ -285,6 +285,3 @@ def find_open_and_close_difference(start_index):
             break
     print("CSV Kaydedildi...")
     df.to_csv('tickers.csv', index=False)
-
-
-find_open_and_close_difference(0)
