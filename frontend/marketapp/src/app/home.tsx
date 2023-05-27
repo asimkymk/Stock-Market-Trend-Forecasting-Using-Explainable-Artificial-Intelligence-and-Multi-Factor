@@ -6,12 +6,13 @@ const Home = () => {
 
 
     return (
-        <div className="relative w-full h-90 px-3 pl-5 pr-20 py-10 mt-8 pb-10 transition-all shadow-none bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start">
+        <div className="relative w-full h-90 px-3 pl-5 pr-20 py-10 mt-8 pb-10 transition-all shadow-xl shadow-black/5 dark:shadow-black/30 bg-gray-950/80 duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start">
             <ReactMarkdown># Stock Market Trend Forecasting Using Explainable Artificial Intelligence and Multi-Factor</ReactMarkdown>
             
-           
+            <ReactMarkdown> </ReactMarkdown>
             <ReactMarkdown>## Abstract</ReactMarkdown>
             <ReactMarkdown>The objective of this project is to develop a comprehensive framework for forecasting stock market trends by integrating traditional time series analysis with multi-factor analysis using external data sources. We explore the predictive power of various machine learning algorithms, including ARIMA, ETS, Random Forest, Gradient Boosting, Linear Regression, Support Vector Regression, Decision Tree, K-Nearest Neighbors, XGBoost, Ridge Regression, and ElasticNet. Additionally, we employ explainable artificial intelligence (XAI) models such as SHAP, LIME, SHAPASH, and explainerdashboard to enhance the interpretability of our predictions. Our approach combines historical stock prices, Google Trends data, and daily news scores as input factors for improved forecasting accuracy.</ReactMarkdown>
+            <ReactMarkdown>{"\n"}</ReactMarkdown>
             <ReactMarkdown>## Introduction</ReactMarkdown>
             <ReactMarkdown>Accurate stock market trend forecasting is crucial for investors and financial institutions to make informed decisions. Traditional approaches rely solely on historical price data, neglecting the valuable insights that can be gained from external factors. In this project, we propose a novel methodology that leverages the adj Close value of tickers alongside Google Trends data and daily news scores. By incorporating multi-factor analysis, we aim to enhance the predictive power of our models and provide a more comprehensive understanding of the underlying market dynamics.</ReactMarkdown>
             <ReactMarkdown>## Methods</ReactMarkdown>
