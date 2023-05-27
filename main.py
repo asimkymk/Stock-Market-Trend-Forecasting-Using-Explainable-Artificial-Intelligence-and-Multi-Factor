@@ -6,10 +6,7 @@ from datetime import datetime
 import os
 from data.news_scraper import get_detailed_text_data
 from data.news_scorer import NewsScorer
-from model.data_virtualizer import *
-# TODO
-# Tüm haberler çekilecek.
-# Code refactoring.
+
 
 longNames = {
     "AAL": "American Airlines",
