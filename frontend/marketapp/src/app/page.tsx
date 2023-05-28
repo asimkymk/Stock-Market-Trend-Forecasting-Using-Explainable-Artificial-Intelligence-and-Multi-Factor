@@ -323,7 +323,7 @@ const YourComponent = () => {
       {home == true ? <div className="mb-1 w-full"><Home></Home></div>
         : loading == true ? <div className="flex flex-col items-center justify-center">
           <ReactLoading type={'cylon'} color="black" />
-          <div className="text-black">{"Please wait. Model is being prepared for " + inputValue + ". It may take some time."}</div>
+          <div className="text-black">{"Please wait. " + selectedModel + " model is being prepared for " + inputValue + ". It may take some time."}</div>
         </div>
           : <iframe height={'3100px'} src="http://127.0.0.1:8050/"></iframe>}
 
