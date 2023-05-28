@@ -22,7 +22,16 @@ def stop_server(port):
 
 @app.route('/shutdown', methods=['GET'])
 def shutdown():
-     stop_server(8050)
+    try:
+         
+        stop_server(8050)
+        message = {
+                "message":"Success",
+                "data":"Sutted down."
+                }
+        return jsonify(message), 200
+    except:
+        return jsonify({"message":"Error",'data': 'API Service error occured!'}), 400
 
 @app.route('/model/<string:symbol>/<string:news_model>/<string:useTrend>/<string:modelName>/<string:delay>', methods=['GET'])
 def  getfeecback(symbol,news_model,useTrend,modelName,delay):

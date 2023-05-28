@@ -12,7 +12,7 @@ const options = [
   "Decision_Tree",
   "KNN_Neighbors",
   "ElasticNet",
-  "Ridge_Regression"
+  "Ridge_Regression",
 
 ];
 
@@ -136,13 +136,13 @@ const YourComponent = () => {
     setSuggestions([]);
     try {
       if (addOpenValue == true) {
-        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/true/' + selectedModel+'/2');
+        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/true/' + selectedModel + '/2');
         setHome(false);
         setLoading(true);
         setData(false);
       }
       else {
-        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/false/' + selectedModel +'/2');
+        const response = await axios.get('http://127.0.0.1:5000/model/' + getValueKey(longNames, name) + '/' + selectedOption + '/false/' + selectedModel + '/2');
         setHome(false);
         setLoading(true);
         setData(false);
@@ -281,21 +281,16 @@ const YourComponent = () => {
                   </div>
 
                 </div>
+                <div className="flex items-center mt-4">
+                  <input id="addOpenValue" onChange={handleCheckboxChange} type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                    <label htmlFor="addOpenValue" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Use Trend Score factor</label>
+                </div>
+
                 
-                <label htmlFor="addOpenValue" className="inline-flex items-center ml-2 mt-3">
-                  <input
-                    type="checkbox"
-                    id="addOpenValue"
-                    checked={addOpenValue}
-                    onChange={handleCheckboxChange}
-                    className="form-checkbox"
-                  />
-                  <span className="ml-1">Use Trend Score parameter</span>
-                </label>
               </div>
               <div className="mt-3">
-              <input type="text" id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type ticker name here..."
-                
+                <input type="text" id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type ticker name here..."
+
                   value={inputValue}
                   onChange={handleInputChange}
                 />
@@ -330,7 +325,7 @@ const YourComponent = () => {
           <ReactLoading type={'cylon'} color="black" />
           <div className="text-black">{"Please wait. Model is being prepared for " + inputValue + ". It may take some time."}</div>
         </div>
-          : <iframe height={'2850px'} src="http://127.0.0.1:8050/"></iframe>}
+          : <iframe height={'3100px'} src="http://127.0.0.1:8050/"></iframe>}
 
 
 
