@@ -12,7 +12,7 @@
 
 ## Abstract
 
-The objective of this project is to develop a comprehensive framework for forecasting stock market trends by integrating traditional time series analysis with multi-factor analysis using external data sources. We explore the predictive power of various machine learning algorithms, including ARIMA, ETS, Random Forest, Gradient Boosting, Linear Regression, Support Vector Regression, Decision Tree, K-Nearest Neighbors, XGBoost, Ridge Regression, and ElasticNet. Additionally, we employ explainable artificial intelligence (XAI) models such as SHAP, LIME, SHAPASH, and explainerdashboard to enhance the interpretability of our predictions. Our approach combines historical stock prices, Google Trends data, and daily news scores as input factors for improved forecasting accuracy.
+The objective of this project is to develop a comprehensive framework for forecasting stock market trends by integrating traditional time series analysis with multi-factor analysis using external data sources. We explore the predictive power of various machine learning algorithms, including ARIMA, ETS, Random Forest, Gradient Boosting, Linear Regression, Support Vector Regression, Decision Tree, K-Nearest Neighbors, XGBoost, Ridge Regression, ElasticNet, LSTM and RNN. Additionally, we employ explainable artificial intelligence (XAI) models such as SHAP, LIME, SHAPASH, and explainerdashboard to enhance the interpretability of our predictions. Our approach combines historical stock prices, Google Trends data, and daily news scores as input factors for improved forecasting accuracy.
 
 ## Introduction
 
