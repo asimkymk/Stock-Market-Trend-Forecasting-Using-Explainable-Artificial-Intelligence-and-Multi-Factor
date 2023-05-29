@@ -22,7 +22,7 @@ Accurate stock market trend forecasting is crucial for investors and financial i
 
 We begin by collecting historical stock price data, which serves as the primary input for our models. Additionally, we acquire Google Trends data related to the selected tickers to capture public interest and sentiment. Furthermore, we incorporate daily news scores to account for the impact of news events on stock market trends. The combination of these factors provides a richer feature set for forecasting.
 
-To evaluate the performance of various machine learning algorithms, we implement and compare a range of models, including ARIMA, ETS, Random Forest, Gradient Boosting, Linear Regression, Support Vector Regression, Decision Tree, K-Nearest Neighbors, XGBoost, Ridge Regression, and ElasticNet. We assess the accuracy and robustness of each model using appropriate evaluation metrics and cross-validation techniques.
+To evaluate the performance of various machine learning algorithms, we implement and compare a range of models, including ARIMA, ETS, Random Forest, Gradient Boosting, Linear Regression, Support Vector Regression, Decision Tree, K-Nearest Neighbors, XGBoost, Ridge Regression, ElasticNet, LSTM and RNN. We assess the accuracy and robustness of each model using appropriate evaluation metrics and cross-validation techniques.
 
 ## Results
 
